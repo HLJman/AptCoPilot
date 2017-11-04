@@ -12,7 +12,8 @@
         
         <script src="scripts/querymap.js"></script>
         
-   
+    
+        
 	</head>
 
 	 <body>
@@ -78,7 +79,7 @@
           // Change this depending on the name of your PHP or XML file
           downloadUrl('php/propmap.php', function(data) {
             var xml = data.responseXML;
-            var markers = xml.documentElement.getElementsByTagName('dot');
+            var markers = xml.documentElement.getElementsByTagName('marker');
             Array.prototype.forEach.call(markers, function(markerElem) {
               var id = markerElem.getAttribute('id');
               var name = markerElem.getAttribute('name');
@@ -160,13 +161,7 @@
 
       function doNothing() {}
         
-     
                 
-   
-         
-   
-    
-       
          
     </script> 
     <script async defer
