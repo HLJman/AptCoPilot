@@ -1,0 +1,209 @@
+.logo {
+    max-width: 55%;
+    min-width: 380px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    
+}
+
+
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #464A56;
+    width:100%;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    font-family: sans-serif;
+    text-align: center;
+    padding: 14px 16px;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+/* Change the link color on hover */
+li a:hover {
+    background-color: #018ED0;
+    color: white;
+}
+    
+#subid{
+    color:#464A56;
+    font-weight: bold;
+}
+
+h1 {
+    font-family: sans-serif;
+    display: block;
+    text-align: center;
+    color: #464A56; 
+
+}
+
+
+h3 {
+    font-family: sans-serif;
+    display: block;
+    text-align: center;
+    color: #464A56; 
+    
+}
+
+button{
+	background-color: white;
+	border: 3px solid #F8C024;
+	color: #464A56;
+	width: 15%;
+    margin-top: 20px;
+	padding-left: 5px;
+	padding-right: 5px;
+    min-width: 100px;
+    height: 50px;
+    
+}
+
+button:hover {
+	color: #464A56;
+	border-color: #F8C024;
+	background-color: #F8C024;
+}
+
+--------------------------------------------------------------------------------
+
+/* General Styles */
+
+* {
+   box-sizing:border-box;
+   -webkit-box-sizing:border-box;
+   -moz-box-sizing:border-box;
+   -webkit-font-smoothing:antialiased;
+   -moz-font-smoothing:antialiased;
+   -o-font-smoothing:antialiased;
+   font-smoothing:antialiased;
+   text-rendering:optimizeLegibility;
+}
+body {
+   color: #464A56;
+   
+}
+
+
+/* Contact Form Styles */
+h1 {
+   margin: 10px 0 0 0;
+   font-family: Arial, san-serif;
+   font-weight: bold;    
+}
+h4{
+   margin: 0 0 20px 0;
+   font-family: Arial, san-serif;
+   font-weight: bold; 
+   color: #464A56;    
+}
+#contact-form {
+   background-color: #E6E6E6;
+   padding: 10px 20px 30px 20px;
+   max-width:100%;
+   float: left;
+   left: 50%;
+   position: absolute;
+   margin-top:30px;
+   margin-left: -260px;
+   border-radius:7px;
+   -webkit-border-radius:7px;
+   -moz-border-radius:7px;
+}
+#contact-form input,   
+#contact-form select,   
+#contact-form textarea,   
+#contact-form label { 
+   font-size: 15px;  
+   margin-bottom: 2px;
+   font-family: Arial, san-serif;
+} 
+#contact-form input,   
+#contact-form select,   
+#contact-form textarea { 
+   width:100%;
+   background: #fff;
+   border: 0; 
+   -moz-border-radius: 4px;  
+   -webkit-border-radius: 4px;  
+   border-radius: 4px;
+   margin-bottom: 25px;  
+   padding: 5px;  
+}  
+#contact-form input:focus,   
+#contact-form select:focus,   
+#contact-form textarea:focus {  
+   background-color: #fff; 
+   outline-color: #F8C024    
+}  
+#contact-form textarea {
+   width:100%;
+   height: 150px;
+}
+#contact-form button[type="submit"] {
+   cursor:pointer;
+   width:100%;
+   border:none;
+   background:#464A56;
+   background-image:-moz-linear-gradient(bottom, #464A56 0%, #464A56 52%);
+   background-image:-webkit-linear-gradient(bottom, #464A56 0%, #464A56 52%);
+   color:#FFF;
+   margin:0 0 5px;
+   padding:10px;
+   border-radius:5px;
+   font-weight: bold;
+   font-size: 20px   
+}
+#contact-form button[type="submit"]:hover {
+   background-image:-moz-linear-gradient(bottom, #F8C024 0%, #F8C024 52%);
+   background-image:-webkit-linear-gradient(bottom, #F8C024 0%, #F8C024 52%);
+   -webkit-transition:background 0.3s ease-in-out;
+   -moz-transition:background 0.3s ease-in-out;
+   transition:background-color 0.3s ease-in-out;
+}
+
+input:required, textarea:required {  
+   box-shadow: none;
+   -moz-box-shadow: none;  
+   -webkit-box-shadow: none;  
+   -o-box-shadow: none;  
+} 
+#contact-form .required {  
+   font-weight:bold;  
+   color: #464A56;      
+}
+
+/* Hide success/failure message
+   (especially since the php is missing) */
+#failure, #success {
+   color: #6EA070; 
+   display:none;  
+}
+
+/* Make form look nice on smaller screens */
+@media only screen and (max-width: 580px) {
+   #contact-form{
+      left: 3%;
+      margin-right: 3%;
+      width: 88%;
+      margin-left: 0;
+      padding-left: 3%;
+      padding-right: 3%;
+   }
+}
+
+
+

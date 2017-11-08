@@ -1,0 +1,181 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>Apartment CoPilot</title>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <link rel="icon" href="images/favicon.ico" type="image/gif" sizes="16x16">
+        <link rel="stylesheet" href="../css/properties.css">
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4&callback&libraries=places"></script>
+        
+        
+        <script src="../scripts/querymap.js"></script> 
+        
+    
+        
+	</head>
+
+	 <body>
+         
+        <div>
+        <!-- Logo for Carpenter Commercial -->
+
+        <img src="../images/Horizontal-Logo---Website.png" class="logo">
+    
+    </div>    
+        
+    <div>    
+        <!-- Main Menu -->
+        
+        
+        <ul>
+        
+            <li><a href="/index.html">Home</a></li>
+            <li id='active'><a href="../html/properties.html">Properties</a></li>
+            <li><a href="people.html">People</a></li>
+            <li><a href="properties.html">Map</a></li>
+            <li><a href="properties.html">Query</a></li>
+            <li><a href="properties.html">Rent Survey</a></li>
+            <li><a href="index.html">News</a></li>
+            <li><a href="html/contactus.html">Contact Us</a></li>
+        
+        </ul>
+        
+    </div> 
+         
+    <div>
+        <h2>Property Map</h2>
+             
+    </div> 
+         
+                    
+     <div id="containerdiv">
+         <div id = "containerelm">
+         <button class = "containbtn" type="button">Show All Properties</button>
+         <button class = "containbtn" type="button">Show Market Rate Properties</button>
+         <button class = "containbtn" type="button">Show Affordable Properties</button> 
+         </div>  
+
+       <!-- Map DIV START -->  
+         
+         <div id="map" class="frontmap">
+        
+       
+
+        
+
+
+  <script>
+
+
+
+    var customIcon = {
+      url: "/images/mapdot.png"
+    };
+
+    function initMap() {
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: new google.maps.LatLng(40.354528, -111.757338),
+        zoom: 6
+      });
+
+
+      var infoWindow = new google.maps.InfoWindow;
+
+      // Change this depending on the name of your PHP or XML file
+      downloadUrl('localhost:8081/properties/all', function (data) {
+        Array.prototype.forEach.call(data, function (markerElem) {
+          var id = markerElem.id;
+          var name = markerElem.name;
+          var address = markerElem.address;
+          var type = markerElem.type;
+          var city = markerElem.city;
+          var units = markerElem.units;
+          var county = markerElem.county;
+          var mainpic = markerElem.mainpic;
+          var point = new google.maps.LatLng(
+            parseFloat(markerElem.lat),
+            parseFloat(markerElem.lng));
+
+          var infowincontent = document.createElement('div');
+          var propname = document.createElement('h1');
+          propname.textContent = name
+          infowincontent.appendChild(propname);
+
+          var wunits = document.createElement('h3');
+          wunits.textContent = "Units: " + units
+          infowincontent.appendChild(wunits);
+
+          var propaddress = document.createElement('h3');
+          propaddress.textContent = "Address: " + address
+          infowincontent.appendChild(propaddress);
+
+          var propcity = document.createElement('h3');
+          propcity.textContent = "City: " + city
+          infowincontent.appendChild(propcity);
+
+          var wtype = document.createElement('h3');
+          wtype.textContent = "Type: " + type
+          infowincontent.appendChild(wtype);
+
+
+           var propimage = document.createElement('img');
+              propimage.setAttribute("src", "proppics/"+mainpic)
+              propimage.setAttribute("width", "400");
+              propimage.setAttribute("height", "228");
+              propimage.setAttribute("id", "pic");
+           infowincontent.appendChild(propimage);
+
+
+
+          var icon = customIcon
+          var marker = new google.maps.Marker({
+            map: map,
+            position: point,
+            icon: customIcon,
+          });
+          marker.addListener('click', function () {
+            infoWindow.setContent(infowincontent);
+            infoWindow.open(map, marker);
+          });
+        });
+      });
+    }
+
+    //Add border to map
+    document.getElementById("map").style.border = "1px solid #018ED0";
+
+    document.getElementById("map").style.marginRight = "10px";
+
+
+    function downloadUrl(url, callback) {
+      var request = new XMLHttpRequest();
+      request.open("GET", "http://localhost:8081/properties/all", true);
+      request.setRequestHeader("Accept", "application/json")
+      request.setRequestHeader("x-pingpong", "pingpong")
+
+      request.onload = function (e) {
+        if (this.readyState === 4 && this.status === 200) {
+          callback(JSON.parse(this.responseText));
+        } else {
+          console.error(this.statusText);
+        }
+      };
+
+      request.onerror = function (e) {
+        console.error(this.statusText);
+      }
+
+      request.send();
+    }
+
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4&callback=initMap">
+  </script>
+    </div> 
+    <!-- Main Map DIV END -->        
+    </div>       
+         
+  </body>
+</html>
