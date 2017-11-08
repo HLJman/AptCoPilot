@@ -1,10 +1,13 @@
 package storage
 
-import "database/sql"
-import _ "github.com/go-sql-driver/mysql"
-import "log"
+import (
+	"log"
 
-var db *sql.DB
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jmoiron/sqlx"
+)
+
+var db *sqlx.DB
 
 // $servername = "localhost:8889";
 // $username = "jadmin";
@@ -12,7 +15,7 @@ var db *sql.DB
 // $database = "copilot";
 
 func Connect() (err error) {
-	db, err = sql.Open("mysql", "jadmin:a00787206@tcp(localhost:8889)/copilot")
+	db, err = sqlx.Connect("mysql", "jadmin:a00787206@tcp(localhost:8889)/copilot")
 	if err != nil {
 		return err
 	}
@@ -21,40 +24,27 @@ func Connect() (err error) {
 }
 
 type Property struct {
-	ID        string `sql:"id"`
-	Name      string `sql:"name"`
-	Address   string `sql:"address"`
-	Latitude  string `sql:"lat"`
-	Longitude string `sql:"lng"`
-	Type      string `sql:"type"`
-	City      string `sql:"city"`
-	Units     string `sql:"units"`
-	County    string `sql:"county"`
-	MainPic   string `sql:"mainpic"`
+	ID        int     `db:"id"`
+	Name      string  `db:"name"`
+	Address   string  `db:"address"`
+	Latitude  float32 `db:"lat"`
+	Longitude float32 `db:"lng"`
+	Type      string  `db:"type"`
+	City      string  `db:"city"`
+	Units     int     `db:"units"`
+	County    string  `db:"county"`
+	MainPic   string  `db:"mainpic"`
+	Year      string  `db:"year"`
+	State     string  `db:"state"`
+	Status    string  `db:"status"`
 }
 
 type Properties []Property
 
 func AllProperties() (Properties, error) {
-	rows, err := db.Query("SELECT * FROM properties")
-	if err != nil {
-		log.Println(err)
-		return nil, err
-	}
-
-	defer rows.Close()
-
 	ps := make(Properties, 0)
-	for rows.Next() {
-		var p Property
-		if err := rows.Scan(&p); err != nil {
-			log.Println(err)
-		}
-
-		ps = append(ps, p)
-	}
-
-	if err := rows.Err(); err != nil {
+	err := db.Select(&ps, "SELECT * FROM properties")
+	if err != nil {
 		log.Println(err)
 	}
 
