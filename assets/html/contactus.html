@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Apartment CoPilot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="contactform.css">
+  <link rel="icon" href="images/favicon.ico" type="image/gif" sizes="16x16">
+  <link rel="stylesheet" href="css/contactus.css">
+
+  
+</head>
+
+<body>
+
+    
+<div>
+        <!-- Logo for Apt Copilot -->
+
+        <img src="images/Horizontal-Logo---Website.png" class="logo">
+    
+    </div>    
+        
+    <div>    
+        <!-- Main Menu -->
+        
+        
+        <ul>
+        
+            <li><a href="index.html">Hub</a></li>
+            <li id='link'><a href="properties.html">Properties</a></li>
+            <li id='link'><a href="people.html">People</a></li>
+            <li><a href="properties.html">Map</a></li>
+            <li><a href="properties.html">Query</a></li>
+            <li><a href="properties.html">Rent Survey</a></li>
+            <li><a href="index.html">News</a></li>
+            <li><a href="contactus.html">Contact Us</a></li>
+        
+        </ul>
+        
+    </div>     
+    
+    
+   
+    
+    
+
+<div id="contact-form">
+	<div>
+		<h1>Contact Us</h1> 
+		<h4>Have a question or just want to get in touch? Let's talk.</h4> 
+	</div>
+		<p id="failure">Oopsie...message not sent.</p>  
+		<p id="success">Your message was sent successfully. Thank you!</p>
+
+		   <form method="post" action="/">
+			<div>
+		      <label for="firstname">
+		      	<span class="required">First Name: *</span> 
+		      	<input type="text" id="name" name="name" value="" placeholder="Your First Name" required="required" tabindex="1" autofocus="autofocus" />
+		      </label> 
+			</div>
+               <div>
+		      <label for="lastname">
+		      	<span class="required">Last Name: *</span> 
+		      	<input type="text" id="lastname" name="lastname" value="" placeholder="Your Last Name" required="required" tabindex="1" autofocus="autofocus" />
+		      </label> 
+			</div>
+			<div>
+		      <label for="email">
+		      	<span class="required">Email: *</span>
+		      	<input type="email" id="email" name="email" value="" placeholder="Your Email" tabindex="2" required="required" />
+		      </label>  
+			</div>
+               <div>
+		      <label for="phone">
+		      	<span class="required">Phone:</span> 
+		      	<input type="text" id="phone" name="phone" value="" placeholder="___-___-____" required="false" tabindex="1" autofocus="autofocus" />
+		      </label> 
+			</div>
+			<div>		          
+		      <label  for="subject">
+		      <span id='subid'>Subject: </span>
+			      <select id="subject" name="subject" tabindex="4">   
+			         <option value="question1">Free Property Appraisal</option>
+			         <option value="question2">Information Request</option>  
+			         <option value="question3">Add me to your Market Update</option>
+			      </select>
+		      </label>
+			</div>
+			<div>		          
+		      <label for="message">
+		      	<span class="required">Message: *</span> 
+		      	<textarea id="message" name="message" placeholder="Please write your message here." tabindex="5" required="required"></textarea> 
+		      </label>  
+			</div>
+			<div>		           
+		      <button name="submit" type="submit" id="submit" >SEND</button> 
+			</div>
+		   </form>
+
+	</div>
+  
+  
+</body>
+</html>

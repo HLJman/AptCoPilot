@@ -1,10 +1,6 @@
 .logo {
-    max-width: 60%;
+    max-width: 55%;
     min-width: 380px;
-    display: block;
-    vertical-align: middle;
-    margin-right: auto;
-    margin-left: auto;
     padding-bottom: 5px;
     padding-top: 5px;
     
@@ -20,14 +16,20 @@
 
 .frontmap {
     height: 750px;
-    max-width: 100%;
-    display: block;
-    vertical-align: middle;
-    margin-right: auto;
-    margin-left: auto;
-    padding-bottom: 5px;
-    padding-top: 5px;
+    max-width: 70%;
+    margin-top: 30px;
     
+    
+}
+
+#containerdiv {
+    position: relative;
+    
+}
+
+#containerelm {
+    
+
     
 }
 
@@ -39,7 +41,7 @@ ul {
     padding: 0;
     overflow: hidden;
     background-color: #464A56;
-    width:100%;
+    width: 100%;
 }
 
 li {
@@ -58,10 +60,13 @@ li a {
 
 /* Change the link color on hover */
 li a:hover {
-    background-color: #F8C024;
-    color: #464A56;
+    background-color: #018ED0;
+    color: white;
 }
     
+#active {
+    background-color: #018ED0;
+}
 
 h1 {
     font-family: sans-serif;
@@ -88,23 +93,27 @@ h3 {
     
 }
 
-button{
-	background-color: white;
-	border: 3px solid #F8C024;
-	color: #464A56;
-	width: 15%;
-    margin-top: 20px;
-	padding-left: 5px;
-	padding-right: 5px;
-    min-width: 100px;
-    height: 50px;
+.containbtn{
+	background-color: #018ED0;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+	color: white;
+    margin-bottom: 20px;
+    font-size: 18px;
+	min-width: 100pt;
+	padding-left: 30px;
+	padding-right: 30px;
+    min-width: 200px;
+    height: 30px;
+    
+    
     
 }
 
 button:hover {
-	color: #464A56;
-	border-color: #F8C024;
-	background-color: #F8C024;
+	color: white;
+	background-color: #464A56;
 }
 
 .text {
