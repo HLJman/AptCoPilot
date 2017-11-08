@@ -11,7 +11,7 @@ import (
 
 func Register(mux *goji.Mux) {
 	mux.Use(corsHandler)
-	mux.HandleFunc(pat.Get("/properties/all"), handler.AllProperties)
+	mux.HandleFunc(pat.Get("/properties/:type"), handler.Properties)
 }
 
 func corsHandler(h http.Handler) http.Handler {

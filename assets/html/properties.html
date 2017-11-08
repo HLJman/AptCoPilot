@@ -31,14 +31,15 @@
         
         <ul>
         
-            <li><a href="/assets/index.html">Home</a></li>
-            <li id='active'><a href="../html/properties.html">Properties</a></li>
+            <li><a href="../index.html">Home</a></li>
+            <li id='active'><a href="properties.html">Properties</a></li>
             <li><a href="people.html">People</a></li>
             <li><a href="properties.html">Map</a></li>
             <li><a href="properties.html">Query</a></li>
             <li><a href="properties.html">Rent Survey</a></li>
             <li><a href="index.html">News</a></li>
             <li><a href="support.html">Support</a></li>
+            <li><a href="contactus.html">Contact Us</a></li>
         
         </ul>
         
@@ -51,11 +52,11 @@
          
                     
      <div id="containerdiv">
-         <div id = "containerelm">
-         <button class = "containbtn" type="button">Show All Properties</button>
-         <button class = "containbtn" type="button">Show Market Rate Properties</button>
-         <button class = "containbtn" type="button">Show Affordable Properties</button> 
-         </div>  
+         <div id="containerelm">
+         <button class="containbtn" type="button" onclick="loadAllProperties()">Show All Properties</button>
+         <button class="containbtn" type="button" onclick="loadMarketRateProperties()">Show Market Rate Properties</button>
+         <button class="containbtn" type="button" onclick="loadAffordableProperties()">Show Affordable Properties</button> 
+    </div>  
 
        <!-- Map DIV START -->  
          
@@ -74,7 +75,7 @@
       url: "/images/mapdot.png"
     };
 
-    function initMap() {
+    function buildMarkers(data) {
       var map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(40.354528, -111.757338),
         zoom: 6
@@ -83,9 +84,7 @@
 
       var infoWindow = new google.maps.InfoWindow;
 
-      // Change this depending on the name of your PHP or XML file
-      downloadUrl('localhost:8081/properties/all', function (data) {
-        Array.prototype.forEach.call(data, function (markerElem) {
+      Array.prototype.forEach.call(data, function (markerElem) {
           var id = markerElem.id;
           var name = markerElem.name;
           var address = markerElem.address;
@@ -127,8 +126,6 @@
               propimage.setAttribute("id", "pic");
            infowincontent.appendChild(propimage);
 
-
-
           var icon = customIcon
           var marker = new google.maps.Marker({
             map: map,
@@ -140,7 +137,18 @@
             infoWindow.open(map, marker);
           });
         });
-      });
+    };
+
+    function loadAllProperties() {
+      makeRequest('http://localhost:8081/properties/all', buildMarkers)
+    }
+
+    function loadMarketRateProperties() {
+      makeRequest('http://localhost:8081/properties/marketrate', buildMarkers)
+    }
+    
+    function loadAffordableProperties() {
+      makeRequest('http://localhost:8081/properties/affordable', buildMarkers)
     }
 
     //Add border to map
@@ -149,9 +157,9 @@
     document.getElementById("map").style.marginRight = "10px";
 
 
-    function downloadUrl(url, callback) {
+    function makeRequest(url, callback) {
       var request = new XMLHttpRequest();
-      request.open("GET", "http://localhost:8081/properties/all", true);
+      request.open("GET", url, true);
       request.setRequestHeader("Accept", "application/json")
       request.setRequestHeader("x-pingpong", "pingpong")
 
@@ -171,7 +179,7 @@
     }
 
   </script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4&callback=initMap">
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4&callback=loadAllProperties">
   </script>
     </div> 
     <!-- Main Map DIV END -->        

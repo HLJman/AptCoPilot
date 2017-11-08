@@ -6,13 +6,32 @@ import (
 	"net/http"
 
 	"github.com/HLJman/AptCoPilot/internal/storage"
+	"goji.io/pat"
 )
 
-func AllProperties(w http.ResponseWriter, r *http.Request) {
-	ps, err := storage.AllProperties()
-	if err != nil {
-		log.Println(err)
-		return
+func Properties(w http.ResponseWriter, r *http.Request) {
+	var ps storage.Properties
+	var err error
+
+	switch pat.Param(r, "type") {
+	case "all":
+		ps, err = storage.AllProperties()
+		if err != nil {
+			log.Println(err)
+			return
+		}
+	case "marketrate":
+		ps, err = storage.MarketRateProperties()
+		if err != nil {
+			log.Println(err)
+			return
+		}
+	case "affordable":
+		ps, err = storage.AffordableProperties()
+		if err != nil {
+			log.Println(err)
+			return
+		}
 	}
 
 	type property struct {

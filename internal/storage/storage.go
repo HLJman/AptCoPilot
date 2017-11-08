@@ -50,3 +50,23 @@ func AllProperties() (Properties, error) {
 
 	return ps, nil
 }
+
+func MarketRateProperties() (Properties, error) {
+	ps := make(Properties, 0)
+	err := db.Select(&ps, "SELECT * FROM PROPERTIES WHERE type like '%market%'")
+	if err != nil {
+		log.Println(err)
+	}
+
+	return ps, nil
+}
+
+func AffordableProperties() (Properties, error) {
+	ps := make(Properties, 0)
+	err := db.Select(&ps, "SELECT * FROM PROPERTIES WHERE type like '%affordable%'")
+	if err != nil {
+		log.Println(err)
+	}
+
+	return ps, nil
+}
