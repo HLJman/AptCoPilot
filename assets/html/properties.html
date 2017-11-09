@@ -7,9 +7,6 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
         <link rel="icon" href="images/favicon.ico" type="image/gif" sizes="16x16">
         <link rel="stylesheet" href="../css/properties.css">
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4&callback&libraries=places"></script>
-        
-        
         <script src="../scripts/querymap.js"></script> 
         
     
@@ -60,7 +57,7 @@
 
        <!-- Map DIV START -->  
          
-         <div id="map" class="frontmap">
+    <div id="map" class="frontmap">
         
        
 
@@ -72,13 +69,13 @@
 
 
     var customIcon = {
-      url: "/images/mapdot.png"
+      url: "/assets/images/mapdot.png"
     };
 
     function buildMarkers(data) {
       var map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(40.354528, -111.757338),
-        zoom: 6
+        zoom: 7
       });
 
 
@@ -132,6 +129,7 @@
             position: point,
             icon: customIcon,
           });
+          
           marker.addListener('click', function () {
             infoWindow.setContent(infowincontent);
             infoWindow.open(map, marker);
@@ -178,7 +176,8 @@
       request.send();
     }
 
-  </script>
+  </script>    
+
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4&callback=loadAllProperties">
   </script>
     </div> 

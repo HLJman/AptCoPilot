@@ -94,11 +94,10 @@ h3 {
 }
 
 .containbtn{
-	background-color: #018ED0;
-    border: none;
+    color: #464A56;
+	background-color: white;
+    border-color: #464A56;
     outline: none;
-    border-radius: 5px;
-	color: white;
     margin-bottom: 20px;
     font-size: 18px;
 	min-width: 100pt;
@@ -107,14 +106,16 @@ h3 {
     min-width: 200px;
     height: 30px;
     
-    
+}
+
+.containbtn:hover {
+    background-color: #464A56;
+    color: white;
+    cursor: pointer;
     
 }
 
-button:hover {
-	color: white;
-	background-color: #464A56;
-}
+
 
 .text {
 	display: block;
