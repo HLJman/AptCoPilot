@@ -69,7 +69,7 @@
 
 
     var customIcon = {
-      url: "/assets/images/mapdot.png"
+      url: "../images/mapdot.png"
     };
 
     function buildMarkers(data) {
@@ -78,21 +78,17 @@
         zoom: 7
       });
 
-
       var infoWindow = new google.maps.InfoWindow;
 
-      Array.prototype.forEach.call(data, function (markerElem) {
-          var id = markerElem.id;
-          var name = markerElem.name;
-          var address = markerElem.address;
-          var type = markerElem.type;
-          var city = markerElem.city;
-          var units = markerElem.units;
-          var county = markerElem.county;
-          var mainpic = markerElem.mainpic;
-          var point = new google.maps.LatLng(
-            parseFloat(markerElem.lat),
-            parseFloat(markerElem.lng));
+      var markers = data.map(function(apt, i) {
+        var id = apt.id;
+          var name = apt.name;
+          var address = apt.address;
+          var type = apt.type;
+          var city = apt.city;
+          var units = apt.units;
+          var county = apt.county;
+          var mainpic = apt.mainpic;
 
           var infowincontent = document.createElement('div');
           var propname = document.createElement('h1');
@@ -117,24 +113,27 @@
 
 
            var propimage = document.createElement('img');
-              propimage.setAttribute("src", "/assets/proppics/"+mainpic)
+              propimage.setAttribute("src", "../proppics/"+mainpic)
               propimage.setAttribute("width", "400");
               propimage.setAttribute("height", "228");
               propimage.setAttribute("id", "pic");
            infowincontent.appendChild(propimage);
 
-          var icon = customIcon
           var marker = new google.maps.Marker({
-            map: map,
-            position: point,
+            position: new google.maps.LatLng(parseFloat(apt.lat), parseFloat(apt.lng)),
             icon: customIcon,
           });
-          
+
           marker.addListener('click', function () {
             infoWindow.setContent(infowincontent);
             infoWindow.open(map, marker);
           });
-        });
+
+          return marker
+      })
+
+      var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m'});
     };
 
     function loadAllProperties() {
@@ -177,6 +176,8 @@
     }
 
   </script>    
+  <script src="https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/src/markerclusterer.js">  </script>
+
 
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4&callback=loadAllProperties">
   </script>
