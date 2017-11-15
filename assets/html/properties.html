@@ -81,43 +81,9 @@
       var infoWindow = new google.maps.InfoWindow;
 
       var markers = data.map(function(apt, i) {
-        var id = apt.id;
-          var name = apt.name;
-          var address = apt.address;
-          var type = apt.type;
-          var city = apt.city;
-          var units = apt.units;
-          var county = apt.county;
-          var mainpic = apt.mainpic;
-
-          var infowincontent = document.createElement('div');
-          var propname = document.createElement('h1');
-          propname.textContent = name
-          infowincontent.appendChild(propname);
-
-          var wunits = document.createElement('h3');
-          wunits.textContent = "Units: " + units
-          infowincontent.appendChild(wunits);
-
-          var propaddress = document.createElement('h3');
-          propaddress.textContent = "Address: " + address
-          infowincontent.appendChild(propaddress);
-
-          var propcity = document.createElement('h3');
-          propcity.textContent = "City: " + city
-          infowincontent.appendChild(propcity);
-
-          var wtype = document.createElement('h3');
-          wtype.textContent = "Type: " + type
-          infowincontent.appendChild(wtype);
-
-
-           var propimage = document.createElement('img');
-              propimage.setAttribute("src", "../proppics/"+mainpic)
-              propimage.setAttribute("width", "400");
-              propimage.setAttribute("height", "228");
-              propimage.setAttribute("id", "pic");
-           infowincontent.appendChild(propimage);
+          var infowincontent = new MarkerInfo(apt.id, apt.name, apt.type, 
+                                              apt.units, apt.address, apt.city, 
+                                              apt.mainpic)
 
           var marker = new google.maps.Marker({
             position: new google.maps.LatLng(parseFloat(apt.lat), parseFloat(apt.lng)),
@@ -177,7 +143,7 @@
 
   </script>    
   <script src="https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/src/markerclusterer.js">  </script>
-
+  <script src="../scripts/mapmarker.js"></script>
 
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4&callback=loadAllProperties">
   </script>
