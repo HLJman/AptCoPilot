@@ -16,10 +16,7 @@
 
 .frontmap {
     height: 750px;
-    max-width: 70%;
-    margin-top: 30px;
-    
-    
+    width: 70%;
 }
 
 #containerdiv {
@@ -164,7 +161,22 @@ video#bgvid {
     visibility: inherit;
 }
 
+.properties-content {
+    display: flex;
+    margin-top: 30px;
+}
 
+.properties-list {
+    width: 30%;
+}
 
+.properties-search-input {
+    width: 90%;
+}
 
+.properties-search-view {
+    height: 750px;
+    overflow: auto;
+    width: 90%;
+}
 

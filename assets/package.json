@@ -1,0 +1,22 @@
+{
+  "name": "assets",
+  "version": "1.0.0",
+  "description": "apartment copilot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HLJman/AptCoPilot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HLJman/AptCoPilot/issues"
+  },
+  "homepage": "https://github.com/HLJman/AptCoPilot#readme",
+  "dependencies": {
+    "fuzzy": "^0.1.3"
+  }
+}

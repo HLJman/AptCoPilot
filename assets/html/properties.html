@@ -1,155 +1,128 @@
 <!doctype html>
 
 <html>
-	<head>
-		<title>Apartment CoPilot</title>
-		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-        <link rel="icon" href="images/favicon.ico" type="image/gif" sizes="16x16">
-        <link rel="stylesheet" href="../css/properties.css">
-        <script src="../scripts/querymap.js"></script> 
-        
-    
-        
-	</head>
 
-	 <body>
-         
-        <div>
-        <!-- Logo for Carpenter Commercial -->
+<head>
+  <title>Apartment CoPilot</title>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <link rel="icon" href="images/favicon.ico" type="image/gif" sizes="16x16">
+  <link rel="stylesheet" href="../css/properties.css">
 
-        <img src="../images/Horizontal-Logo---Website.png" class="logo">
-    
-    </div>    
-        
-    <div>    
-        <!-- Main Menu -->
-        
-        
-        <ul>
-        
-            <li><a href="../index.html">Home</a></li>
-            <li id='active'><a href="properties.html">Properties</a></li>
-            <li><a href="people.html">People</a></li>
-            <li><a href="properties.html">Map</a></li>
-            <li><a href="properties.html">Query</a></li>
-            <li><a href="properties.html">Rent Survey</a></li>
-            <li><a href="index.html">News</a></li>
-            <li><a href="support.html">Support</a></li>
-            <li><a href="contactus.html">Contact Us</a></li>
-        
-        </ul>
-        
-    </div> 
-         
-    <div>
-        <h2>Property Map</h2>
-             
-    </div> 
-         
-                    
-     <div id="containerdiv">
-         <div id="containerelm">
-         <button class="containbtn" type="button" onclick="loadAllProperties()">Show All Properties</button>
-         <button class="containbtn" type="button" onclick="loadMarketRateProperties()">Show Market Rate Properties</button>
-         <button class="containbtn" type="button" onclick="loadAffordableProperties()">Show Affordable Properties</button> 
-    </div>  
-
-       <!-- Map DIV START -->  
-         
-    <div id="map" class="frontmap">
-        
-       
-
-        
-
-
-  <script>
-
-
-
-    var customIcon = {
-      url: "../images/mapdot.png"
-    };
-
-    function buildMarkers(data) {
-      var map = new google.maps.Map(document.getElementById('map'), {
-        center: new google.maps.LatLng(40.354528, -111.757338),
-        zoom: 7
-      });
-
-      var infoWindow = new google.maps.InfoWindow;
-
-      var markers = data.map(function(apt, i) {
-          var infowincontent = new MarkerInfo(apt.id, apt.name, apt.type, 
-                                              apt.units, apt.address, apt.city, 
-                                              apt.mainpic)
-
-          var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(parseFloat(apt.lat), parseFloat(apt.lng)),
-            icon: customIcon,
-          });
-
-          marker.addListener('click', function () {
-            infoWindow.setContent(infowincontent);
-            infoWindow.open(map, marker);
-          });
-
-          return marker
-      })
-
-      var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m'});
-    };
-
-    function loadAllProperties() {
-      makeRequest('http://localhost:8081/properties/all', buildMarkers)
-    }
-
-    function loadMarketRateProperties() {
-      makeRequest('http://localhost:8081/properties/marketrate', buildMarkers)
-    }
-    
-    function loadAffordableProperties() {
-      makeRequest('http://localhost:8081/properties/affordable', buildMarkers)
-    }
-
-    //Add border to map
-    document.getElementById("map").style.border = "1px solid #018ED0";
-
-    document.getElementById("map").style.marginRight = "10px";
-
-
-    function makeRequest(url, callback) {
-      var request = new XMLHttpRequest();
-      request.open("GET", url, true);
-      request.setRequestHeader("Accept", "application/json")
-      request.setRequestHeader("x-pingpong", "pingpong")
-
-      request.onload = function (e) {
-        if (this.readyState === 4 && this.status === 200) {
-          callback(JSON.parse(this.responseText));
-        } else {
-          console.error(this.statusText);
-        }
-      };
-
-      request.onerror = function (e) {
-        console.error(this.statusText);
-      }
-
-      request.send();
-    }
-
-  </script>    
   <script src="https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/src/markerclusterer.js">  </script>
   <script src="../scripts/mapmarker.js"></script>
+  <script src="../scripts/properties.js"></script>
+ 
+  <style>
+    #map {
+      border: 1px solid #018ED0;
+      margin-right: 10px;
+    }
+  </style>
 
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4&callback=loadAllProperties">
-  </script>
-    </div> 
-    <!-- Main Map DIV END -->        
-    </div>       
-         
-  </body>
+
+</head>
+
+<body>
+
+  <div>
+    <!-- Logo for Carpenter Commercial -->
+
+    <img src="../images/Horizontal-Logo---Website.png" class="logo">
+
+  </div>
+
+  <div>
+    <!-- Main Menu -->
+
+
+    <ul>
+
+      <li>
+        <a href="../index.html">Home</a>
+      </li>
+      <li id='active'>
+        <a href="properties.html">Properties</a>
+      </li>
+      <li>
+        <a href="people.html">People</a>
+      </li>
+      <li>
+        <a href="properties.html">Map</a>
+      </li>
+      <li>
+        <a href="properties.html">Query</a>
+      </li>
+      <li>
+        <a href="properties.html">Rent Survey</a>
+      </li>
+      <li>
+        <a href="index.html">News</a>
+      </li>
+      <li>
+        <a href="support.html">Support</a>
+      </li>
+      <li>
+        <a href="contactus.html">Contact Us</a>
+      </li>
+
+    </ul>
+
+  </div>
+
+  <div>
+    <h2>Property Map</h2>
+
+  </div>
+
+
+  <div id="containerdiv">
+    <div id="containerelm">
+      <button class="containbtn" type="button" onclick="loadAllProperties()">Show All Properties</button>
+      <button class="containbtn" type="button" onclick="loadMarketRateProperties()">Show Market Rate Properties</button>
+      <button class="containbtn" type="button" onclick="loadAffordableProperties()">Show Affordable Properties</button>
+    </div>
+
+    <!-- Map DIV START -->
+
+    <div class="properties-content">
+      <div id="map" class="frontmap"></div>
+      <div class="properties-list">
+        <div>
+          <input id="properties-search-input" type="search" onkeyup="Properties.searchProperties(this)" placeholder="Search for a property...">
+        </div>
+        <div class="properties-search-view">
+          
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: new google.maps.LatLng(40.354528, -111.757338),
+          zoom: 7
+        });
+
+        Properties.setMap(map)
+
+        map.addListener('bounds_changed', function () {
+          var bounds = this.getBounds()
+          Properties.filterProperties(function (prop) {
+            return bounds.contains(new google.maps.LatLng(parseFloat(prop.lat), parseFloat(prop.lng)))
+          })
+        });
+
+        Properties.loadAllProperties()
+      }
+    </script>
+   
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4&callback=initMap"></script>
+
+    
+    <script src="../scripts/querymap.js"></script>
+    <script src="../node_modules/fuzzy/lib/fuzzy.js"></script>
+
+</body>
+
 </html>
