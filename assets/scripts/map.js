@@ -1,6 +1,7 @@
 var PropertiesMap = (function () {
     var map;
     var markers = [];
+    var markerClusterer;
 
     function initMap(mapChanged) {
         map = new google.maps.Map(document.getElementById('map'), {
@@ -46,7 +47,7 @@ var PropertiesMap = (function () {
             return marker
         })
 
-        var markerCluster = new MarkerClusterer(map, markers,
+        markerClusterer = new MarkerClusterer(map, markers,
             { imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m' });
     };
 
@@ -57,6 +58,9 @@ var PropertiesMap = (function () {
     }
 
     function _clearMarkers() {
+        if (markerClusterer) {
+            markerClusterer.removeMarkers(markers)
+        }
         _setMapOnAll(null)
     }
 

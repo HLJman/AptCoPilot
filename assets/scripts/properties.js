@@ -16,8 +16,14 @@ var Properties = (function (PropertiesMap) {
     properties = data;
   }
 
-  function loadAllProperties(callback) {
-    _makeRequest('http://localhost:8081/properties/all', callback)
+  function loadAllProperties(data) {
+    if (data == null) {
+      _makeRequest('http://localhost:8081/properties/all', loadAllProperties)
+      return 
+    }
+
+    _buildSideList(data)
+    PropertiesMap.populateMap(data)
   }
 
   function loadMarketRateProperties(data) {
