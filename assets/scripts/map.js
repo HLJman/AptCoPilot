@@ -1,4 +1,4 @@
-var Map = (function() {
+var PropertiesMap = (function() {
     var map;
 
     function setMap(m) {

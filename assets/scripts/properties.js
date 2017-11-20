@@ -10,18 +10,6 @@ var Properties = (function () {
 
     var filteredProperties = fuzzy.filter(val, filteredProperites, options)
 
-    var scrollView = document.querySelector('.properties-search-view')
-    scrollView.innerHTML = ""
-
-    filteredProperties.map(function (apt, i) {
-      apt = apt.original
-      var infowincontent = new MarkerInfo(apt.id, apt.name, apt.type,
-        apt.units, apt.address, apt.city,
-        apt.mainpic)
-
-      scrollView.appendChild(infowincontent)
-    });
-
   }
 
   var customIcon = {
@@ -31,6 +19,7 @@ var Properties = (function () {
   function buildMarkers(data) {
     properties = data
     filteredProperites = data
+    mapFilteredProperites = data
 
     var infoWindow = new google.maps.InfoWindow;
 
@@ -73,12 +62,6 @@ var Properties = (function () {
     makeRequest('http://localhost:8081/properties/affordable', buildMarkers)
   }
 
-  //Add border to map
-  // document.getElementById("map").style.border = "1px solid #018ED0";
-
-  // document.getElementById("map").style.marginRight = "10px";
-
-
   function makeRequest(url, callback) {
     var request = new XMLHttpRequest();
     request.open("GET", url, true);
@@ -100,10 +83,19 @@ var Properties = (function () {
     request.send();
   }
 
-  function filterProperties(f) {
-    filteredProperites = filteredProperites.filter(f);
+  function mapFilterProperties(f) {
+    mapFilteredProperites = properties.filter(f);
 
-    console.log(filteredProperites)
+    var scrollView = document.querySelector('.properties-search-view')
+    scrollView.innerHTML = ""
+
+    mapFilteredProperites.forEach(function (apt, i) {
+      var infowincontent = new MarkerInfo(apt.id, apt.name, apt.type,
+        apt.units, apt.address, apt.city,
+        apt.mainpic)
+
+      scrollView.appendChild(infowincontent)
+    });
   }
 
   function setMap(m) {
@@ -112,7 +104,7 @@ var Properties = (function () {
 
   return {
     loadAllProperties: loadAllProperties,
-    filterProperties: filterProperties,
+    mapFilterProperties: mapFilterProperties,
     setMap: setMap,
     searchProperties: searchProperties
   }

@@ -108,7 +108,7 @@
 
         map.addListener('bounds_changed', function () {
           var bounds = this.getBounds()
-          Properties.filterProperties(function (prop) {
+          Properties.mapFilterProperties(function (prop) {
             return bounds.contains(new google.maps.LatLng(parseFloat(prop.lat), parseFloat(prop.lng)))
           })
         });
