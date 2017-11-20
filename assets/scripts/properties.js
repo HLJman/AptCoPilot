@@ -1,68 +1,46 @@
-var Properties = (function () {
+var Properties = (function (PropertiesMap) {
   var properties = [];
-  var filteredProperites = [];
-  var map;
 
   function searchProperties(e) {
     var val = e.value
 
     var options = { extract: function (el) { return el.name } }
 
-    var filteredProperties = fuzzy.filter(val, filteredProperites, options)
+    var filteredProperties = fuzzy.filter(val, properties, options)
+
+    console.log(filteredProperties)
 
   }
-
-  var customIcon = {
-    url: "../images/mapdot.png"
-  };
-
-  function buildMarkers(data) {
-    properties = data
-    filteredProperites = data
-    mapFilteredProperites = data
-
-    var infoWindow = new google.maps.InfoWindow;
-
-    var scrollView =  document.querySelector('.properties-search-view');
-
-    var markers = data.map(function (apt, i) {
-      var infowincontent = new MarkerInfo(apt.id, apt.name, apt.type,
-        apt.units, apt.address, apt.city,
-        apt.mainpic)
-
-      scrollView.appendChild(infowincontent)
-
-      var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(parseFloat(apt.lat), parseFloat(apt.lng)),
-        icon: customIcon,
-      });
-
-      marker.addListener('click', function () {
-        infoWindow.setContent(infowincontent);
-        infoWindow.open(map, marker);
-      });
-
-      return marker
-    })
-
-    var markerCluster = new MarkerClusterer(map, markers,
-      { imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m' });
-
-  };
-
-  function loadAllProperties() {
-    makeRequest('http://localhost:8081/properties/all', buildMarkers)
+  
+  function setProperties(data) {
+    properties = data;
   }
 
-  function loadMarketRateProperties() {
-    makeRequest('http://localhost:8081/properties/marketrate', buildMarkers)
+  function loadAllProperties(callback) {
+    _makeRequest('http://localhost:8081/properties/all', callback)
   }
 
-  function loadAffordableProperties() {
-    makeRequest('http://localhost:8081/properties/affordable', buildMarkers)
+  function loadMarketRateProperties(data) {
+    if (data == null) {
+      _makeRequest('http://localhost:8081/properties/marketrate', loadAffordableProperties)
+      return 
+    }
+
+    _buildSideList(data)
+    PropertiesMap.populateMap(data)
   }
 
-  function makeRequest(url, callback) {
+  function loadAffordableProperties(data) {
+    if (data == null) {
+      _makeRequest('http://localhost:8081/properties/affordable', loadAffordableProperties)
+      return 
+    }
+
+    _buildSideList(data)
+    PropertiesMap.populateMap(data)
+  }
+
+  function _makeRequest(url, callback) {
     var request = new XMLHttpRequest();
     request.open("GET", url, true);
     request.setRequestHeader("Accept", "application/json")
@@ -86,10 +64,15 @@ var Properties = (function () {
   function mapFilterProperties(f) {
     mapFilteredProperites = properties.filter(f);
 
+    _buildSideList(mapFilteredProperites)
+  }
+
+  function _buildSideList(data) {
+    console.log(data)
     var scrollView = document.querySelector('.properties-search-view')
     scrollView.innerHTML = ""
 
-    mapFilteredProperites.forEach(function (apt, i) {
+    data.forEach(function (apt, i) {
       var infowincontent = new MarkerInfo(apt.id, apt.name, apt.type,
         apt.units, apt.address, apt.city,
         apt.mainpic)
@@ -98,14 +81,12 @@ var Properties = (function () {
     });
   }
 
-  function setMap(m) {
-    map = m
-  }
-
   return {
+    setProperties: setProperties,
     loadAllProperties: loadAllProperties,
     mapFilterProperties: mapFilterProperties,
-    setMap: setMap,
-    searchProperties: searchProperties
+    searchProperties: searchProperties,
+    loadAffordableProperties: loadAffordableProperties,
+    loadMarketRateProperties: loadMarketRateProperties
   }
-})();
+})(PropertiesMap);

@@ -10,8 +10,11 @@
   <link rel="stylesheet" href="../css/properties.css">
 
   <script src="https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/src/markerclusterer.js">  </script>
+ 
+  <script src="../scripts/map.js"></script>
   <script src="../scripts/mapmarker.js"></script>
   <script src="../scripts/properties.js"></script>
+  <script src="../scripts/index.js"></script>
  
   <style>
     #map {
@@ -73,14 +76,18 @@
   <div>
     <h2>Property Map</h2>
 
+    <div>
+      <input id="properties-search-input" type="search" onkeyup="Properties.searchProperties(this)" placeholder="Search for a property...">
+    </div>
+
   </div>
 
 
   <div id="containerdiv">
     <div id="containerelm">
-      <button class="containbtn" type="button" onclick="loadAllProperties()">Show All Properties</button>
-      <button class="containbtn" type="button" onclick="loadMarketRateProperties()">Show Market Rate Properties</button>
-      <button class="containbtn" type="button" onclick="loadAffordableProperties()">Show Affordable Properties</button>
+      <button class="containbtn" type="button" onclick="Properties.loadAllProperties()">Show All Properties</button>
+      <button class="containbtn" type="button" onclick="Properties.loadMarketRateProperties()">Show Market Rate Properties</button>
+      <button class="containbtn" type="button" onclick="Properties.loadAffordableProperties()">Show Affordable Properties</button>
     </div>
 
     <!-- Map DIV START -->
@@ -88,36 +95,13 @@
     <div class="properties-content">
       <div id="map" class="frontmap"></div>
       <div class="properties-list">
-        <div>
-          <input id="properties-search-input" type="search" onkeyup="Properties.searchProperties(this)" placeholder="Search for a property...">
-        </div>
         <div class="properties-search-view">
           
         </div>
       </div>
     </div>
-
-    <script>
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: new google.maps.LatLng(40.354528, -111.757338),
-          zoom: 7
-        });
-
-        Properties.setMap(map)
-
-        map.addListener('bounds_changed', function () {
-          var bounds = this.getBounds()
-          Properties.mapFilterProperties(function (prop) {
-            return bounds.contains(new google.maps.LatLng(parseFloat(prop.lat), parseFloat(prop.lng)))
-          })
-        });
-
-        Properties.loadAllProperties()
-      }
-    </script>
    
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4&callback=Main.init"></script>
 
     
     <script src="../scripts/querymap.js"></script>
