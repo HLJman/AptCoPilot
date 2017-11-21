@@ -22,6 +22,7 @@ var Properties = (function (PropertiesMap) {
       return 
     }
 
+    properties = data;
     _buildSideList(data)
     PropertiesMap.populateMap(data)
   }
