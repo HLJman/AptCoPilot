@@ -6,11 +6,6 @@ var Main = (function(Properties, PropertiesMap) {
         Properties.loadAllProperties();
     }
 
-    function _propertiesLoaded(data) {
-        Properties.setProperties(data)
-        PropertiesMap.populateMap(data);
-    }
-
     return {
         init: init
     }

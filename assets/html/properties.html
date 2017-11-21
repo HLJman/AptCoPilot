@@ -78,6 +78,7 @@
 
     <div>
       <input id="properties-search-input" type="search" onkeyup="Properties.searchProperties(this)" placeholder="Search for a property...">
+      <div class="properties-search-results"></div>
     </div>
 
   </div>
@@ -94,11 +95,7 @@
 
     <div class="properties-content">
       <div id="map" class="frontmap"></div>
-      <div class="properties-list">
-        <div class="properties-search-view">
-          
-        </div>
-      </div>
+      <div class="properties-side-list"></div>
     </div>
    
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4&callback=Main.init"></script>

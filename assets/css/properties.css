@@ -174,9 +174,36 @@ video#bgvid {
     width: 90%;
 }
 
-.properties-search-view {
-    height: 750px;
-    overflow: auto;
-    width: 90%;
+.properties-search-results {
+    position: fixed;
+    border: 1px solid black;
+    width: 300px;
+    z-index: 100;
+    background: white;
+    display: none;
 }
 
+.properties-side-list {
+    height: 750px;
+    overflow: auto;
+    width: 30%;
+}
+
+input[type=search] {
+    border: #000;
+    padding: 10px;
+    font-size: 1.2em;
+    width: 300px;
+    outline: none;
+}
+
+.properties-search-result {
+    height: 20px;
+    padding: 10px;
+    border-top: 1px solid black;
+}
+
+.properties-search-result:hover {
+    background-color: gray;
+    cursor: pointer;
+}

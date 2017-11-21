@@ -3,17 +3,32 @@ var Properties = (function (PropertiesMap) {
 
   function searchProperties(e) {
     var val = e.value
+    var resultsView = document.querySelector(".properties-search-results");
+
+    if (val === "") {
+      resultsView.style.display = 'none'
+      return
+    }
 
     var options = { extract: function (el) { return el.name } }
 
     var filteredProperties = fuzzy.filter(val, properties, options)
 
-    console.log(filteredProperties)
-
+    _clearSearchResults(resultsView)
+    _buildSearchResults(resultsView, filteredProperties)
   }
-  
-  function setProperties(data) {
-    properties = data;
+
+  function _buildSearchResults(view, data) {
+    view.style.display = 'block';
+
+    data.forEach(function(d) {
+      var d = d.original
+      view.innerHTML += `<div class="properties-search-result">` + d.name + `</div>`
+    });
+  }
+
+  function _clearSearchResults(view) {
+    view.innerHTML = "";
   }
 
   function loadAllProperties(data) {
@@ -76,7 +91,7 @@ var Properties = (function (PropertiesMap) {
 
   function _buildSideList(data) {
     console.log(data)
-    var scrollView = document.querySelector('.properties-search-view')
+    var scrollView = document.querySelector('.properties-side-list')
     scrollView.innerHTML = ""
 
     data.forEach(function (apt, i) {
@@ -89,7 +104,6 @@ var Properties = (function (PropertiesMap) {
   }
 
   return {
-    setProperties: setProperties,
     loadAllProperties: loadAllProperties,
     mapFilterProperties: mapFilterProperties,
     searchProperties: searchProperties,
