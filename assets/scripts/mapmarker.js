@@ -13,7 +13,6 @@ class MarkerInfo extends HTMLElement {
                 <img src=../proppics/` + encodeURI(pic) + ` width='400' height='228' id='pic'>
             </div>`
 
-            console.log(encodeURI(pic))
         // TODO open property detail page
         this.addEventListener('click', e => {});
     }
