@@ -35,6 +35,7 @@ var PropertiesMap = (function () {
                 apt.mainpic)
 
             var marker = new google.maps.Marker({
+                map: map,
                 position: new google.maps.LatLng(parseFloat(apt.lat), parseFloat(apt.lng)),
                 icon: customIcon,
             });
@@ -47,8 +48,8 @@ var PropertiesMap = (function () {
             return marker
         })
 
-        markerClusterer = new MarkerClusterer(map, markers,
-            { imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m' });
+        // markerClusterer = new MarkerClusterer(map, markers,
+        //     { imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m' });
     };
 
     function _setMapOnAll(map) {

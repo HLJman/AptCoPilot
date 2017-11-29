@@ -1,0 +1,107 @@
+<template id="aptcopilot-header">
+        <style>
+            .logo {
+                max-width: 55%;
+                min-width: 380px;
+                padding-bottom: 5px;
+                padding-top: 5px;
+            }
+    
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #464A56;
+                width: 100%;
+            }
+    
+            li {
+                float: left;
+            }
+    
+            li a {
+                display: block;
+                color: white;
+                font-family: sans-serif;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+                font-size: 16px;
+            }
+    
+            /* Change the link color on hover */
+    
+            li a:hover {
+                background-color: #018ED0;
+                color: white;
+            }
+    
+            li.active {
+                background-color: #018ED0;
+            }
+        </style>
+        <img src="../images/Horizontal-Logo---Website.png" class="logo">
+        <ul>
+    
+            <li id="home" class='active'>
+                <a class="tab" href="../index.html">Home</a>
+            </li>
+            <li id="properties">
+                <a class="tab" href="../views/properties.html">Properties</a>
+            </li>
+            <li>
+                <a class="tab" url="support.html">Support</a>
+            </li>
+    
+        </ul>
+    </template>
+    
+    <script>
+        let tmpl = document.currentScript.ownerDocument.querySelector('#aptcopilot-header')
+    
+        customElements.define('aptcopilot-header', class extends HTMLElement {
+            constructor() {
+                super();
+    
+                let shadowRoot = this.attachShadow({ mode: 'open' });
+                shadowRoot.appendChild(tmpl.content.cloneNode(true));
+    
+                let tabs = shadowRoot.querySelectorAll(".tab")
+                tabs.forEach(function (tab) {
+                    tab.addEventListener('click', e => {
+                        e.preventDefault()
+    
+                        window.location.href = e.target.getAttribute('href')
+                    });
+                });
+            }
+
+            connectedCallback() {
+                this.shadowRoot.querySelectorAll('.active').forEach(function (e) {
+                    e.classList.remove('active');
+                });
+
+                var activeAttr = this.getAttribute("data-active");
+                this.shadowRoot.querySelector('#' + activeAttr).classList.add('active');
+            }
+
+        })
+    
+        function load(url, element) {
+            req = new XMLHttpRequest();
+            req.open("GET", url, false);
+            req.send(null);
+    
+            element.innerHTML = req.responseText;
+        }
+    
+        // page('/', index)
+        // page('/properties', properties)
+    
+        // function index(ctx, next) {
+            
+        // }
+            
+    
+    </script>
