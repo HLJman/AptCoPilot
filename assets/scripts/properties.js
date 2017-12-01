@@ -23,7 +23,7 @@ var Properties = (function (PropertiesMap) {
 
     data.forEach(function(d) {
       var d = d.original
-      view.innerHTML += `<div class="properties-search-result">` + d.name + `</div>`
+      view.innerHTML += `<div class="properties-search-result"><a href='/views/property.html?id=`+d.id+`'</a>` + d.name + `</div>`
     });
   }
 
@@ -33,7 +33,7 @@ var Properties = (function (PropertiesMap) {
 
   function loadAllProperties(data) {
     if (data == null) {
-      _makeRequest('http://localhost:8081/properties/all', loadAllProperties)
+      _makeRequest(config.apibaseurl + '/properties', loadAllProperties)
       return 
     }
 
@@ -44,7 +44,7 @@ var Properties = (function (PropertiesMap) {
 
   function loadMarketRateProperties(data) {
     if (data == null) {
-      _makeRequest('http://localhost:8081/properties/marketrate', loadAffordableProperties)
+      _makeRequest(config.apibaseurl + '/properties?type=marketrate', loadAffordableProperties)
       return 
     }
 
@@ -54,7 +54,7 @@ var Properties = (function (PropertiesMap) {
 
   function loadAffordableProperties(data) {
     if (data == null) {
-      _makeRequest('http://localhost:8081/properties/affordable', loadAffordableProperties)
+      _makeRequest(config.apibaseurl + '/properties?type=affordable', loadAffordableProperties)
       return 
     }
 

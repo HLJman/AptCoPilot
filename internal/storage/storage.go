@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"fmt"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -9,13 +10,8 @@ import (
 
 var db *sqlx.DB
 
-// $servername = "localhost:8889";
-// $username = "jadmin";
-// $password = "a00787206";
-// $database = "copilot";
-
-func Connect() (err error) {
-	db, err = sqlx.Connect("mysql", "jadmin:a00787206@tcp(localhost:8889)/copilot")
+func Connect(username, password, server, database string) (err error) {
+	db, err = sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s", username, password, server, database))
 	if err != nil {
 		return err
 	}

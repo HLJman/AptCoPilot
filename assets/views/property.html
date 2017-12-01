@@ -1,0 +1,66 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <title>Apartment CoPilot</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <link rel="icon" href="images/favicon.ico" type="image/gif" sizes="16x16">
+    <link rel="stylesheet" href="../css/properties.css">
+
+    <link rel="import" href="../elements/aptcopilot-header.html">
+    <link rel="import" href="../elements/aptcopilot-property.html">
+
+    <style>
+    </style>
+
+
+</head>
+
+<body>
+
+    <aptcopilot-header data-active="properties"></aptcopilot-header>
+    <section id="content"></section>
+
+    <script>
+        (function () {
+            var id = getParameterByName("id", window.location.href);
+            var request = new XMLHttpRequest();
+            request.open("GET", config.apibaseurl + '/properties/' + id, true);
+            request.setRequestHeader("Accept", "application/json")
+            request.setRequestHeader("x-pingpong", "pingpong")
+
+            request.onload = function (e) {
+                if (this.readyState === 4 && this.status === 200) {
+                    var e = document.createElement('aptcopilot-property');
+                    e.setAttribute("data", this.responseText);
+
+                    document.querySelector("#content").appendChild(e);
+
+                } else {
+                    console.error(this.statusText);
+                }
+            };
+
+            request.onerror = function (e) {
+                console.error(this.statusText);
+            }
+
+            request.send();
+        })();
+
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+    </script>
+
+</body>
+
+</html>

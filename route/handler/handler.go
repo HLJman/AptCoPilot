@@ -13,13 +13,7 @@ func Properties(w http.ResponseWriter, r *http.Request) {
 	var ps storage.Properties
 	var err error
 
-	switch pat.Param(r, "type") {
-	case "all":
-		ps, err = storage.AllProperties()
-		if err != nil {
-			log.Println(err)
-			return
-		}
+	switch r.URL.Query().Get("type") {
 	case "marketrate":
 		ps, err = storage.MarketRateProperties()
 		if err != nil {
@@ -28,6 +22,12 @@ func Properties(w http.ResponseWriter, r *http.Request) {
 		}
 	case "affordable":
 		ps, err = storage.AffordableProperties()
+		if err != nil {
+			log.Println(err)
+			return
+		}
+	default:
+		ps, err = storage.AllProperties()
 		if err != nil {
 			log.Println(err)
 			return
@@ -67,4 +67,16 @@ func Properties(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
+}
+
+func Property(w http.ResponseWriter, r *http.Request) {
+	type property struct {
+		ID   string `json:"id"`
+		Name string `json:"name"`
+	}
+
+	json.NewEncoder(w).Encode(property{
+		ID:   pat.Param(r, "id"),
+		Name: "Property",
+	})
 }
