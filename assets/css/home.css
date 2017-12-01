@@ -137,7 +137,7 @@ textarea:focus, input:focus {
 }
 
 
-video#bgvid { 
+img#bgvid { 
     position: fixed;
     top: 50%;
     left: 50%;

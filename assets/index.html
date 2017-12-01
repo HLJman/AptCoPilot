@@ -10,7 +10,14 @@
     <link rel="icon" href="images/favicon.ico" type="image/gif" sizes="16x16">
 
     <link rel="import" href="elements/aptcopilot-header.html">
+    <!-- <link rel="import" href="elements/aptcopilot-search.html"> -->
     <link rel="import" href="scripts/config.js">
+    <style>
+        html, body {
+            margin: 0;
+            height: 100%;
+        }
+    </style>
 
 </head>
 
@@ -18,13 +25,8 @@
 
     <aptcopilot-header data-active="home" header></aptcopilot-header>
 
-    <div>
-
-        <video playsinline autoplay muted loop id="bgvid">
-            <source src="videos/DJI%20Reel.mp4" type="video/mp4">
-        </video>
-
-    </div>
+    <img src="images/home.jpeg" id="bgvid">
+    <!-- <aptcopilot-search></aptcopilot-search> -->
 
 </body>
 

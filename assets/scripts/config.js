@@ -1,5 +1,5 @@
 (function() {
     window.config = {
-        apibaseurl: "http://aptcopilot.com:8001"
+        apibaseurl: "http://localhost:8001"
     }
 })();
