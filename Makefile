@@ -24,3 +24,5 @@ docker_build:
 upload: docker_build
 	scp -r -P 2222 ./AptCoPilot ./assets/* copilotadmin@50.87.144.12:/home1/copilotadmin/public_html
 
+ssh: 
+	ssh copilotadmin@50.87.144.12 -p 2222

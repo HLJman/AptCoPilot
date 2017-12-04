@@ -1,0 +1,137 @@
+<script src="../scripts/config.js"></script>
+<script src="../node_modules/fuzzy/lib/fuzzy.js"></script>
+
+<template id="aptcopilot-search">
+    <style>
+        .properties-search-input {
+            width: 90%;
+        }
+
+        .properties-search-results {
+            position: fixed;
+            border: 1px solid black;
+            width: 300px;
+            z-index: 100;
+            background: white;
+            display: none;
+        }
+
+        input[type=search] {
+            border: #000;
+            padding: 10px;
+            font-size: 1.2em;
+            width: 300px;
+            outline: none;
+        }
+
+        .properties-search-result {
+            height: 20px;
+            padding: 10px;
+            border-top: 1px solid black;
+        }
+
+        .properties-search-result:hover {
+            background-color: gray;
+            cursor: pointer;
+        }
+    </style>
+
+    <input id="properties-search-input" type="search" onkeyup="searchProperties(this)" placeholder="Search for a property...">
+    <div class="properties-search-results"></div>
+
+</template>
+
+<script>
+    let searchtmpl = document.currentScript.ownerDocument.querySelector('#aptcopilot-search')
+    var properties = [];
+
+    customElements.define('aptcopilot-search', class extends HTMLElement {
+        constructor() {
+            super();
+
+            let shadowRoot = this.attachShadow({ mode: 'open' });
+            shadowRoot.appendChild(searchtmpl.content.cloneNode(true));
+
+            _makeRequest(config.apibaseurl + '/properties')
+
+        }
+
+        connectedCallback() {
+
+        }
+
+        get header() {
+            return this.hasAttribute("header")
+        }
+
+        set header(val) {
+            if (val) {
+                this.setAttribute('header', '');
+            } else {
+                this.removeAttribute('header');
+            }
+        }
+
+    });
+
+
+  function searchProperties(e) {
+    var val = e.value
+    var resultsView = searchtmpl.querySelector(".properties-search-results");
+
+    if (val === "") {
+      resultsView.style.display = 'none'
+      return
+    }
+
+    var options = { extract: function (el) { return el.name } }
+
+    var filteredProperties = fuzzy.filter(val, properties, options)
+
+    _clearSearchResults(resultsView)
+    _buildSearchResults(resultsView, filteredProperties)
+  }
+
+  function _buildSearchResults(view, data) {
+    view.style.display = 'block';
+
+    data.forEach(function(d) {
+      var d = d.original
+      view.innerHTML += `<div class="properties-search-result"><a href='/views/property.html?id=`+d.id+`'</a>` + d.name + `</div>`
+    });
+  }
+
+  function _clearSearchResults(view) {
+    view.innerHTML = "";
+  }
+
+    function _makeRequest(url) {
+        var request = new XMLHttpRequest();
+        request.open("GET", url, true);
+        request.setRequestHeader("Accept", "application/json")
+        request.setRequestHeader("x-pingpong", "pingpong")
+
+        request.onload = function (e) {
+            if (this.readyState === 4 && this.status === 200) {
+                properties = JSON.parse(this.responseText);
+            } else {
+                console.error(this.statusText);
+            }
+        };
+
+        request.onerror = function (e) {
+            console.error(this.statusText);
+        }
+
+        request.send();
+    }
+
+    function load(url, element) {
+        req = new XMLHttpRequest();
+        req.open("GET", url, false);
+        req.send(null);
+
+        element.innerHTML = req.responseText;
+    }
+
+</script>
