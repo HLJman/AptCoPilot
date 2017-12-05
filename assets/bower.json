@@ -1,0 +1,21 @@
+{
+  "name": "assets",
+  "description": "apartment copilot",
+  "main": "index.js",
+  "authors": [
+    "joshadambell <joshadambell@me.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/HLJman/AptCoPilot",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "google-map": "GoogleWebComponents/google-map#^2.0.3"
+  }
+}

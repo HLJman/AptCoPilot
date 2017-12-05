@@ -86,7 +86,7 @@ h3 {
     
 }
 
-button{
+/* button{
 	background-color: white;
 	border: 3px solid #F8C024;
 	color: #464A56;
@@ -103,7 +103,7 @@ button:hover {
 	color: #464A56;
 	border-color: #F8C024;
 	background-color: #F8C024;
-}
+} */
 
 .text {
 	display: block;

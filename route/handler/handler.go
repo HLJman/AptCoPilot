@@ -71,12 +71,36 @@ func Properties(w http.ResponseWriter, r *http.Request) {
 
 func Property(w http.ResponseWriter, r *http.Request) {
 	type property struct {
-		ID   string `json:"id"`
-		Name string `json:"name"`
+		ID       string      `json:"id"`
+		Name     string      `json:"name"`
+		Location interface{} `json:"location"`
+		Info     interface{} `json:"info"`
 	}
 
 	json.NewEncoder(w).Encode(property{
 		ID:   pat.Param(r, "id"),
 		Name: "Property",
+		Location: struct {
+			Latitude  string `json:"latitude"`
+			Longitude string `json:"longitude"`
+		}{
+			Latitude:  "37.78",
+			Longitude: "-122.4",
+		},
+		Info: struct {
+			Price  string
+			Units  int
+			Floors int
+			Year   string
+			Lot    string
+			Size   string
+		}{
+			Price:  "$430,000",
+			Units:  54,
+			Size:   "21,228 SF",
+			Floors: 2,
+			Year:   "2004",
+			Lot:    "0.1 AC",
+		},
 	})
 }
