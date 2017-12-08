@@ -2,7 +2,7 @@
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
 
 <script src="../scripts/config.js"></script>
-<script src="../node_modules/fuzzy/lib/fuzzy.js"></script>
+<script src="../node_modules/fuse.js/dist/fuse.min.js"></script>
 
 <dom-module id="aptcopilot-search">
     <template>
@@ -25,6 +25,9 @@
                 font-size: 1.2em;
                 width: var(--aptcopilot-search-width);
                 outline: none;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
             }
 
             .properties-search-result {
@@ -39,11 +42,11 @@
             }
         </style>
 
-        <input id="properties-search-input" type="search" value="{{searchString::input}}" placeholder="Search for a property...">
+        <input id="properties-search-input" type="search" value="{{searchString::input}}" placeholder="Search for a property by name or city...">
         <div id="propertySearchResults" class="properties-search-results" filter="{{searchProperties(searchString)}}" hidden>
             <template is="dom-repeat" items="{{searchResults}}">
-                <div class="properties-search-result" on-click="openProperty" property-id="{{item.original.id}}">
-                        {{item.original.name}}
+                <div class="properties-search-result" on-click="openProperty" property-id="{{item.id}}">
+                    {{item.name}}
                 </div>
             </template>
         </div>
@@ -86,14 +89,20 @@
                     return
                 }
 
-                var options = { extract: function (el) { return el.name } }
+                var options = {
+                    keys: ['city', 'name'],
+                    threshold: 0.4
+                }
+
+                var fuse = new Fuse(this.properties, options)
+
+                this.searchResults = fuse.search(val)
 
                 this.$.propertySearchResults.hidden = false
-                this.searchResults = fuzzy.filter(val, this.properties, options)
             }
 
             openProperty(e) {
-                window.location.href="/views/property.html?id=" + e.target.propertyId;
+                window.location.href = "/views/property.html?id=" + e.target.propertyId;
             }
 
             _makeRequest(url) {

@@ -11,13 +11,18 @@
 
     <link rel="import" href="elements/aptcopilot-header.html">
     <link rel="import" href="elements/aptcopilot-search.html">
+    <link rel="import" href="elements/aptcopilot-properties.html">
     <link rel="import" href="scripts/config.js">
+
+
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="bower_components/iron-pages/iron-pages.html">
     <style>
         html,
         body {
             margin: 0;
             height: 100%;
-            font-family: Gotham, gotham, Verdana, sans-serif;
+            font-family: Gotham, gotham, Verdana, sans-serif !important;
         }
 
         .search-wrapper {
@@ -45,7 +50,7 @@
         }
 
         .search .search-hdr-text {
-            font-size: 50px;
+            font-size: 40px;
             width: auto;
             color: #fff;
             font-weight: 300;
@@ -65,6 +70,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-top: 20px;
         }
 
         .search .browse .browse-button {
@@ -81,7 +87,7 @@
         .logo {
             max-width: 88%;
             min-width: 380px;
-            padding-bottom: 5px;
+            padding-bottom: 50px;
             padding-top: 5px;
         }
     </style>
@@ -89,34 +95,48 @@
 </head>
 
 <body>
-
-    <img src="../images/Horizontal-Logo---Website.png" class="logo">
-
-    <img src="images/home.jpeg" id="bgvid">
-
-    <div class="search-wrapper">
-        <section class="search">
-                <div class="search-content">
-                        <div class="browse">
-                            <div class="browse-button">Browse</div>
-                        </div>
-            <header class="search-header">
-                <h1 class="search-hdr-text">Find your next investment</h1>
-            </header>
-
+    <iron-pages selected="0">
+        <div>
+            <img src="../images/Horizontal-Logo---Website.png" class="logo">
             
-
-                <aptcopilot-search></aptcopilot-search>
-            </div>
-        </section>
-    </div>
+                <img src="images/home.jpeg" id="bgvid">
+            
+                <div class="search-wrapper">
+                    <section class="search">
+                        <div class="search-content">
+                            <header class="search-header">
+                                <h1 class="search-hdr-text">Find your next investment</h1>
+                            </header>
+                        
+                            <aptcopilot-search></aptcopilot-search>    
+                            <div class="browse" onclick="propertiesPage()">
+                                <div class="browse-button">Map View</div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+        </div>
+        <div>
+            <aptcopilot-header data-active="properties"></aptcopilot-header>
+            <aptcopilot-properties></aptcopilot-properties>
+        </div>
+        <div>Three</div>
+      </iron-pages>
+    
 
     <script>
-        document.querySelector(".search .browse").addEventListener("click", function (e) {
-            console.log("click")
+        // document.querySelector(".search .browse").addEventListener("click", function (e) {
+        //     window.location.href = "../views/properties.html";
+        // });
 
-            window.location.href = "../views/properties.html";
-        });
+        function propertiesPage(e) {
+            var pages = document.querySelector('iron-pages');
+            pages.selected = 1;
+        }
+
+        document.querySelector.addEventListener('click', function(e) {
+   
+  });
     </script>
 </body>
 
