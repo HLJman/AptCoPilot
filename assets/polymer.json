@@ -2,6 +2,7 @@
     "entrypoint": "index.html",
     "shell": "src/aptcopilot-app.html",
     "fragments": [
+      "src/aptcopilot-home.html",
       "src/aptcopilot-properties.html",
       "src/aptcopilot-contact.html",
       "src/my-view404.html"
