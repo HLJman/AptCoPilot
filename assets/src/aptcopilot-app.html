@@ -1,0 +1,116 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../src/aptcopilot-header.html">
+<link rel="import" href="../src/aptcopilot-search.html">
+<link rel="import" href="../src/aptcopilot-home.html">
+<link rel="lazy-import" href="../src/aptcopilot-contact.html">
+<link rel="lazy-import" href="../src/aptcopilot-properties.html">
+<link rel="import" href="../scripts/config.js">
+
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+
+<script src="../scripts/properties.js"></script>
+
+<dom-module id="aptcopilot-app">
+    <template>
+        <style>
+            iron-pages {
+                height: calc(100% - 61px);
+            }
+
+            aptcopilot-header {
+                --aptcopilot-header-height: 60px;
+            }
+
+            iron-pages .content {
+                display: block;
+                height: 100%;
+            }
+        </style>
+
+        <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
+        <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+
+        <aptcopilot-header properties="[[properties]]"></aptcopilot-header>
+
+        <iron-pages selected="[[page]]" attr-for-selected='name' role="main">
+            <aptcopilot-home class="content" name="home" properties="[[properties]]"></aptcopilot-home>
+            <aptcopilot-properties class="content" name="properties" properties="{{properties}}"></aptcopilot-properties>
+            <aptcopilot-contact class="content" name="contact"></aptcopilot-contact>
+        </iron-pages>
+
+
+    </template>
+
+    <script>
+        class AptcopilotApp extends Polymer.Element {
+            static get is() { return "aptcopilot-app"; }
+
+            static get properties() {
+                return {
+                    page: {
+                        type: String,
+                        reflectToAttribute: true,
+                        observer: '_pageChanged',
+                    },
+                    routeData: Object,
+                    subroute: String,
+                    // This shouldn't be neccessary, but the Analyzer isn't picking up
+                    // Polymer.Element#rootPath
+                    rootPath: String,
+                    properties: {
+                        type: Array,
+                        value: []
+                    },
+                }
+
+            }
+
+            static get observers() {
+                return [
+                    '_routePageChanged(routeData.page)',
+                ];
+            }
+
+            connectedCallback() {
+                super.connectedCallback();
+
+                Properties.loadAllProperties(this.propertiesLoaded.bind(this))
+            }
+
+            propertiesLoaded(data) {
+                console.log(data)
+                this.properties = data;
+            }
+
+            _routePageChanged(page) {
+                // If no page was found in the route data, page will be an empty string.
+                // Default to 'view1' in that case.
+                this.page = page || 'home';
+            }
+
+            _pageChanged(page) {
+                if (this.page != "home") {
+                    this.shadowRoot.querySelector("aptcopilot-header").search = true;
+                } else {
+                    this.shadowRoot.querySelector("aptcopilot-header").search = false;
+                }
+
+                // Load page import on demand. Show 404 page if fails
+                var resolvedPageUrl = this.resolveUrl('aptcopilot-' + page + '.html');
+                Polymer.importHref(
+                    resolvedPageUrl,
+                    null,
+                    this._showPage404.bind(this),
+                    true);
+            }
+
+            _showPage404() {
+                this.page = 'view404';
+            }
+        }
+        window.customElements.define(AptcopilotApp.is, AptcopilotApp);
+    </script>
+</dom-module>

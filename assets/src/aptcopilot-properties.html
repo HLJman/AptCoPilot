@@ -1,0 +1,166 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<link rel="import" href="../src/aptcopilot-header.html">
+
+<link rel="import" href="../bower_components/google-map/google-map.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+
+<script src="../scripts/properties.js"></script>
+
+<dom-module id="aptcopilot-properties">
+    <template>
+        <style>
+            :host {
+                display: block;
+                height: 100%;
+            }
+
+            aptcopilot-search {
+                --aptcopilot-search-width: 610px;
+            }
+
+            google-map {
+                height: 100%;
+                width: 70%;
+                border: 1px solid #018ED0;
+            }
+
+            .properties-content {
+                height: 96%;
+                display: flex;
+                margin-top: 10px;
+            }
+
+            .properties-side-list {
+                height: 100%;
+                overflow: auto;
+                width: 300px;
+            }
+
+            h1 {
+                display: block;
+                text-align: center;
+                color: #464A56;
+                font-size: medium;
+                margin: 0px;
+            }
+
+            h3 {
+                display: block;
+                text-align: left;
+                color: #464A56;
+                font-size: small;
+                margin: 0px;
+            }
+
+            .containerelm {
+                padding-top: 10px;
+            }
+
+            .containerelm .containbtn {
+                background-color: #018ED0;
+                color: #fff;
+                font-size: 0.8em;
+                padding: 6px;
+            }
+        </style>
+
+        <div class="containerelm">
+            <button class="containbtn" type="button" on-click="loadAllProperties">Show All Properties</button>
+            <button class="containbtn" type="button" on-click="loadMarketRateProperties">Show Market Rate Properties</button>
+            <button class="containbtn" type="button" on-click="loadAffordableProperties">Show Affordable Properties</button>
+        </div>
+
+        <div class="properties-content">
+            <google-map fit-to-markers map={{map}} api-key="AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4" latitude="40.354528" longitude="-111.757338"
+                zoom="7" on-latitude-changed="mapChanged" on-longitude-changed="mapChanged" on-google-map-ready="mapReady">
+                <template is="dom-repeat" items="[[mapFilteredProperites]]">
+                    <google-map-marker latitude="[[item.lat]]" property="[[item]]" on-google-map-marker-click="click" longitude="[[item.lng]]"
+                        icon="../images/mapdot.png">
+                        <div style="width:300px; height: 228px; padding: 5px;">
+                            <img src='../proppics/' + encodeURI([[item.mainpic]]) style="height: 60%; width: 100%" id='pic'>
+                            <!-- <img src="../images/home.jpeg" style="height: 60%; width: 100%" id='pic'> -->
+                            <h1>
+                                <a href='/views/property.html?id=[[item.id]]'>[[item.name]]</a>
+                            </h1>
+                            <h3> Units: [[item.units]]</h3>
+                            <h3> Address: [[item.address]]</h3>
+                            <h3> City: [[item.city]]</h3>
+                            <h3> Type: [[item.type]]</h3>
+                        </div>
+                    </google-map-marker>
+                </template>
+            </google-map>
+            <div class="properties-side-list">
+                <iron-list items="[[mapFilteredProperites]]">
+                    <template>
+                        <div style="width:100%; height: 228px; padding: 5px;">
+                            <img src='../proppics/' + encodeURI([[item.mainpic]]) style="height: 60%; width: 100%" id='pic'>
+                            <!-- <img src="../images/home.jpeg" style="height: 60%; width: 100%" id='pic'> -->
+                            <h1>
+                                <a href='/views/property.html?id=[[item.id]]'>[[item.name]]</a>
+                            </h1>
+                            <h3> Units: [[item.units]]</h3>
+                            <h3> Address: [[item.address]]</h3>
+                            <h3> City: [[item.city]]</h3>
+                            <h3> Type: [[item.type]]</h3>
+                        </div>
+
+                    </template>
+                </iron-list>
+            </div>
+
+    </template>
+
+    <script>
+        class AptcopilotProperties extends Polymer.Element {
+            static get is() { return "aptcopilot-properties"; }
+
+            static get properties() {
+                return {
+                    properties: {
+                        type: Array,
+                        value: [],
+                        observer: "_propertiesChanged"
+                    },
+                    mapFilteredProperites: {
+                        type: Array,
+                        value: []
+                    },
+                    map: {
+                        type: Object
+                    }
+                }
+            }
+
+            mapReady(e) {
+                console.log("ready")
+                this.mapFilteredProperites = this.properties;
+            }
+
+            mapChanged(e) {
+                var lat = e.target.latitude
+                var long = e.target.longitude
+
+                if (this.map) {
+                    var bounds = this.map.getBounds();
+                    this.mapFilteredProperites = this.properties.filter(function (prop) {
+                        return bounds.contains(new google.maps.LatLng(parseFloat(prop.lat), parseFloat(prop.lng)))
+                    })
+                }
+            }
+
+            propertiesLoaded(data) {
+                this.mapFilteredProperites = data;
+                this.properties = data;
+            }
+
+            mapFilterProperties(that, f) {
+                this.mapFilteredProperites = this.properties.filter(f);
+            }
+
+        }
+        window.customElements.define(AptcopilotProperties.is, AptcopilotProperties);
+    </script>
+</dom-module>

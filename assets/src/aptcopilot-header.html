@@ -1,0 +1,122 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../src/aptcopilot-search.html">
+
+<dom-module id="aptcopilot-header">
+    <template>
+        <style>
+            :host {
+                display: flex;
+                height: var(--aptcopilot-header-height);
+                align-items: center;
+                border-bottom: 1px solid #ccc;
+            }
+
+            ul {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+            }
+
+            li {
+                height: 100%;
+            }
+
+            li a {
+                padding: 23px 18px;
+                display: block;
+                color: #3f4448;
+                text-align: center;
+                text-decoration: none;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: .1em;
+            }
+
+            /* Change the link color on hover */
+
+            li a:hover {
+                background-color: #018ED0;
+                color: white;
+                cursor: pointer;
+            }
+
+            img.small-logo {
+                padding: 0px 20px;
+                height: 100%;
+                cursor: pointer;
+            }
+
+            aptcopilot-search {
+                --aptcopilot-search-width: 400px;
+                --aptcopilot-search-margin-right: 20px;
+            }
+
+            .hidden {
+                display: none;
+            }
+        </style>
+
+        <img src="../images/Horizontal-Logo---Website.png" on-click="tabChange" href="/" id="home" class="small-logo">
+        <ul>
+
+            <li>
+                <a href="properties">Properties</a>
+            </li>
+            <li>
+                <a href="contact">Contact</a>
+            </li>
+
+            
+        </ul>
+
+        <aptcopilot-search class="hidden" properties="{{properties}}"></aptcopilot-search>
+
+    </template>
+
+    <script>
+        class AptcopilotHeader extends Polymer.Element {
+            static get is() { return "aptcopilot-header"; }
+
+            static get properties() {
+                return {
+                    header: Boolean,
+                    selected: {
+                        type: String,
+                        notify: true,
+                        reflectToAttribute: true
+                    },
+                    search: {
+                        type: Boolean,
+                        observer: "_searchChanged"
+
+                    },
+                    properties: {
+                        type: Array,
+                        value: []
+                    }
+                }
+            }
+
+            _searchChanged(newValue, oldValue) {
+                if (newValue) {
+                    this.shadowRoot.querySelector('aptcopilot-search').classList.remove('hidden');
+                }
+            }
+
+            tabChange(e) {
+                window.location.href = e.target.getAttribute('href');
+            }
+        }
+
+
+
+        window.customElements.define(AptcopilotHeader.is, AptcopilotHeader);
+    </script>
+</dom-module>

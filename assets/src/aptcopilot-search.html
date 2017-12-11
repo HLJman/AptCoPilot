@@ -1,12 +1,19 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 
 <script src="../scripts/config.js"></script>
+<script src="../scripts/properties.js"></script>
 <script src="../node_modules/fuse.js/dist/fuse.min.js"></script>
 
 <dom-module id="aptcopilot-search">
     <template>
         <style>
+            :host {
+                display: block;
+                margin-right: var(--aptcopilot-search-margin-right);
+            }
+
             .properties-search-input {
                 width: 90%;
             }
@@ -20,14 +27,11 @@
             }
 
             input[type=search] {
-                border: #000;
-                padding: 15px;
-                font-size: 1.2em;
+                border: 1px solid #3f4448;
+                padding: 13px;
+                font-size: .9em;
                 width: var(--aptcopilot-search-width);
                 outline: none;
-                -webkit-border-radius: 5px;
-                -moz-border-radius: 5px;
-                border-radius: 5px;
             }
 
             .properties-search-result {
@@ -40,9 +44,26 @@
                 background-color: lightgray;
                 cursor: pointer;
             }
+
+            iron-icon.search-icon {
+                background: #018ED0;
+                padding: 0px 10px;
+                color: white;
+                cursor: pointer;
+                height: 45px;
+            }
+
+            .search-box {
+                display: flex;
+                align-items: center;
+            }
         </style>
 
-        <input id="properties-search-input" type="search" value="{{searchString::input}}" placeholder="Search for a property by name or city...">
+        <div class="search-box">
+            <input id="properties-search-input" type="search" value="{{searchString::input}}" placeholder="Search for a property by name or city...">
+            <iron-icon class="search-icon" icon="icons:search"></iron-icon>
+        </div>
+
         <div id="propertySearchResults" class="properties-search-results" filter="{{searchProperties(searchString)}}" hidden>
             <template is="dom-repeat" items="{{searchResults}}">
                 <div class="properties-search-result" on-click="openProperty" property-id="{{item.id}}">
@@ -56,12 +77,6 @@
     <script>
         class AptcopilotSearch extends Polymer.Element {
             static get is() { return "aptcopilot-search"; }
-
-            constructor() {
-                super();
-
-                this._makeRequest(config.apibaseurl + '/properties')
-            }
 
             static get properties() {
                 return {
@@ -78,6 +93,17 @@
                         }
                     }
                 }
+            }
+
+            connectedCallback() {
+                super.connectedCallback();
+
+                // Properties.loadAllProperties(this.propertiesLoaded.bind(this));
+            }
+
+            propertiesLoaded(data) {
+                console.log(data)
+                this.properties = data;
             }
 
             searchProperties(e) {
@@ -98,34 +124,16 @@
 
                 this.searchResults = fuse.search(val)
 
-                this.$.propertySearchResults.hidden = false
+                if (this.searchResults.length > 0) {
+                    this.$.propertySearchResults.hidden = false
+                }
             }
 
             openProperty(e) {
                 window.location.href = "/views/property.html?id=" + e.target.propertyId;
             }
 
-            _makeRequest(url) {
-                var request = new XMLHttpRequest();
-                request.open("GET", url, true);
-                request.setRequestHeader("Accept", "application/json")
-                request.setRequestHeader("x-pingpong", "pingpong")
-
-                var that = this;
-                request.onload = function (e) {
-                    if (this.readyState === 4 && this.status === 200) {
-                        that.properties = JSON.parse(this.responseText);
-                    } else {
-                        console.error(this.statusText);
-                    }
-                };
-
-                request.onerror = function (e) {
-                    console.error(this.statusText);
-                }
-
-                request.send();
-            }
         }
-        customElements.define(AptcopilotSearch.is, AptcopilotSearch);
+        window.customElements.define(AptcopilotSearch.is, AptcopilotSearch);
     </script>
+</dom-module>

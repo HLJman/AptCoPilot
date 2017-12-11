@@ -128,7 +128,7 @@
 
 <script>
     let propertyTmpl = document.currentScript.ownerDocument.querySelector('#aptcopilot-property');
-    customElements.define('aptcopilot-property', class extends HTMLElement {
+    window.customElements.define('aptcopilot-property', class extends HTMLElement {
         constructor() {
             super();
             let shadowRoot = this.attachShadow({ mode: 'open' });

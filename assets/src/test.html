@@ -21,7 +21,15 @@
 
 <body>
 
-   <aptcopilot-properties></aptcopilot-properties>
+    <aptcopilot-header></aptcopilot-header>
+    <aptcopilot-properties ></aptcopilot-properties>
+
+   <script>
+       document.querySelector('aptcopilot-header').addEventListener('selected', function(e) {
+        console.log(e.detail.tab)
+       });
+       
+   </script>
 
 </body>
 

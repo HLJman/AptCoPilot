@@ -9,14 +9,14 @@
 
     <link rel="icon" href="images/favicon.ico" type="image/gif" sizes="16x16">
 
-    <link rel="import" href="elements/aptcopilot-header.html">
-    <link rel="import" href="elements/aptcopilot-search.html">
-    <link rel="import" href="elements/aptcopilot-properties.html">
-    <link rel="import" href="scripts/config.js">
+    <script>
+        window.Polymer = {rootPath: '/'};
+    </script>
 
+<script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
-    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="src/aptcopilot-app.html">
+    
     <style>
         html,
         body {
@@ -24,120 +24,15 @@
             height: 100%;
             font-family: Gotham, gotham, Verdana, sans-serif !important;
         }
-
-        .search-wrapper {
-            position: absolute;
-            left: 50%;
-            margin: 0 0 0 -305px;
-            width: 610px;
-        }
-
-        .search {
-            margin: 0;
-            padding-bottom: 20px;
-        }
-
-        *,
-        :after,
-        :before {
-            box-sizing: border-box;
-        }
-
-        .search .search-header {
-            position: relative;
-            padding-bottom: 20px;
-
-        }
-
-        .search .search-hdr-text {
-            font-size: 40px;
-            width: auto;
-            color: #fff;
-            font-weight: 300;
-            text-align: center;
-            text-shadow: 0 0 4px #666;
-            padding-bottom: 10px;
-            margin: 0;
-        }
-
-        .search-content {
-            text-align: center;
-        }
-
-        .search .browse {
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .search .browse .browse-button {
-            border: 1px solid rgb(0, 141, 208);
-            padding: 10px;
-            color: white;
-            background: rgb(0, 141, 208);
-        }
-
-        aptcopilot-search {
-            --aptcopilot-search-width: 610px;
-        }
-
-        .logo {
-            max-width: 88%;
-            min-width: 380px;
-            padding-bottom: 50px;
-            padding-top: 5px;
-        }
     </style>
 
 </head>
 
 <body>
-    <iron-pages selected="0">
-        <div>
-            <img src="../images/Horizontal-Logo---Website.png" class="logo">
-            
-                <img src="images/home.jpeg" id="bgvid">
-            
-                <div class="search-wrapper">
-                    <section class="search">
-                        <div class="search-content">
-                            <header class="search-header">
-                                <h1 class="search-hdr-text">Find your next investment</h1>
-                            </header>
-                        
-                            <aptcopilot-search></aptcopilot-search>    
-                            <div class="browse" onclick="propertiesPage()">
-                                <div class="browse-button">Map View</div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-        </div>
-        <div>
-            <aptcopilot-header data-active="properties"></aptcopilot-header>
-            <aptcopilot-properties></aptcopilot-properties>
-        </div>
-        <div>Three</div>
-      </iron-pages>
-    
-
-    <script>
-        // document.querySelector(".search .browse").addEventListener("click", function (e) {
-        //     window.location.href = "../views/properties.html";
-        // });
-
-        function propertiesPage(e) {
-            var pages = document.querySelector('iron-pages');
-            pages.selected = 1;
-        }
-
-        document.querySelector.addEventListener('click', function(e) {
-   
-  });
-    </script>
+    <aptcopilot-app></aptcopilot-app>
+    <noscript>
+        Please enable JavaScript to view this website.
+    </noscript>
 </body>
 
 </html>

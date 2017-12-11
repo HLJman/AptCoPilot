@@ -1,0 +1,213 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="aptcopilot-contact">
+    <template>
+        <style>
+            * {
+                box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                -webkit-font-smoothing: antialiased;
+                -moz-font-smoothing: antialiased;
+                -o-font-smoothing: antialiased;
+                font-smoothing: antialiased;
+                text-rendering: optimizeLegibility;
+            }
+
+
+            /* Contact Form Styles */
+
+            h1 {
+                margin: 10px 0 0 0;
+                font-family: Arial, san-serif;
+                font-weight: bold;
+            }
+
+            h4 {
+                margin: 0 0 20px 0;
+                font-family: Arial, san-serif;
+                font-weight: bold;
+                color: #464A56;
+            }
+
+            #contact-form {
+                background-color: #E6E6E6;
+                padding: 10px 20px 30px 20px;
+                max-width: 100%;
+                float: left;
+                left: 50%;
+                position: absolute;
+                margin-top: 30px;
+                margin-left: -260px;
+                border-radius: 7px;
+                -webkit-border-radius: 7px;
+                -moz-border-radius: 7px;
+            }
+
+            #contact-form input,
+            #contact-form select,
+            #contact-form textarea,
+            #contact-form label {
+                font-size: 15px;
+                margin-bottom: 2px;
+                font-family: Arial, san-serif;
+            }
+
+            #contact-form input,
+            #contact-form select,
+            #contact-form textarea {
+                width: 100%;
+                background: #fff;
+                border: 0;
+                -moz-border-radius: 4px;
+                -webkit-border-radius: 4px;
+                border-radius: 4px;
+                margin-bottom: 25px;
+                padding: 5px;
+            }
+
+            #contact-form input:focus,
+            #contact-form select:focus,
+            #contact-form textarea:focus {
+                background-color: #fff;
+                outline-color: #F8C024
+            }
+
+            #contact-form textarea {
+                width: 100%;
+                height: 150px;
+            }
+
+            #contact-form button[type="submit"] {
+                cursor: pointer;
+                width: 100%;
+                border: none;
+                background: #464A56;
+                background-image: -moz-linear-gradient(bottom, #464A56 0%, #464A56 52%);
+                background-image: -webkit-linear-gradient(bottom, #464A56 0%, #464A56 52%);
+                color: #FFF;
+                margin: 0 0 5px;
+                padding: 10px;
+                border-radius: 5px;
+                font-weight: bold;
+                font-size: 20px
+            }
+
+            #contact-form button[type="submit"]:hover {
+                background-image: -moz-linear-gradient(bottom, #F8C024 0%, #F8C024 52%);
+                background-image: -webkit-linear-gradient(bottom, #F8C024 0%, #F8C024 52%);
+                -webkit-transition: background 0.3s ease-in-out;
+                -moz-transition: background 0.3s ease-in-out;
+                transition: background-color 0.3s ease-in-out;
+            }
+
+            input:required,
+            textarea:required {
+                box-shadow: none;
+                -moz-box-shadow: none;
+                -webkit-box-shadow: none;
+                -o-box-shadow: none;
+            }
+
+            #contact-form .required {
+                font-weight: bold;
+                color: #464A56;
+            }
+
+            /* Hide success/failure message
+   (especially since the php is missing) */
+
+            #failure,
+            #success {
+                color: #6EA070;
+                display: none;
+            }
+
+            /* Make form look nice on smaller screens */
+
+            @media only screen and (max-width: 580px) {
+                #contact-form {
+                    left: 3%;
+                    margin-right: 3%;
+                    width: 88%;
+                    margin-left: 0;
+                    padding-left: 3%;
+                    padding-right: 3%;
+                }
+            }
+        </style>
+        <div id="contact-form">
+            <div>
+                <h1>Contact Us</h1>
+                <h4>Have a question or just want to get in touch? Let's talk.</h4>
+            </div>
+            <p id="failure">Oopsie...message not sent.</p>
+            <p id="success">Your message was sent successfully. Thank you!</p>
+
+            <form method="post" action="/">
+                <div>
+                    <label for="firstname">
+                        <span class="required">First Name: *</span>
+                        <input type="text" id="name" name="name" value="" placeholder="Your First Name" required="required" tabindex="1" autofocus="autofocus"
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label for="lastname">
+                        <span class="required">Last Name: *</span>
+                        <input type="text" id="lastname" name="lastname" value="" placeholder="Your Last Name" required="required" tabindex="1" autofocus="autofocus"
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label for="email">
+                        <span class="required">Email: *</span>
+                        <input type="email" id="email" name="email" value="" placeholder="Your Email" tabindex="2" required="required" />
+                    </label>
+                </div>
+                <div>
+                    <label for="phone">
+                        <span class="required">Phone:</span>
+                        <input type="text" id="phone" name="phone" value="" placeholder="___-___-____" required="false" tabindex="1" autofocus="autofocus"
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label for="subject">
+                        <span id='subid'>Subject: </span>
+                        <select id="subject" name="subject" tabindex="4">
+                            <option value="question1">Free Property Appraisal</option>
+                            <option value="question2">Information Request</option>
+                            <option value="question3">Add me to your Market Update</option>
+                        </select>
+                    </label>
+                </div>
+                <div>
+                    <label for="message">
+                        <span class="required">Message: *</span>
+                        <textarea id="message" name="message" placeholder="Please write your message here." tabindex="5" required="required"></textarea>
+                    </label>
+                </div>
+                <div>
+                    <button name="submit" type="submit" id="submit">SEND</button>
+                </div>
+            </form>
+
+        </div>
+    </template>
+
+    <script>
+        class AptcopilotContact extends Polymer.Element {
+            static get is() { return "aptcopilot-contact"; }
+
+            static get properties() {
+                return {
+
+                }
+            }
+        }
+        window.customElements.define(AptcopilotContact.is, AptcopilotContact);
+    </script>
+
+
+</dom-module>

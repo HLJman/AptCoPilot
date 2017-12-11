@@ -1,0 +1,118 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../src/aptcopilot-search.html">
+
+<dom-module id="aptcopilot-home">
+    <template>
+        <style>
+            .search-wrapper {
+                position: absolute;
+                left: 50%;
+                margin: 0 0 0 -305px;
+                width: 610px;
+                top: 30%;
+            }
+
+            .search {
+                margin: 0;
+                padding-bottom: 20px;
+            }
+
+            *,
+            :after,
+            :before {
+                box-sizing: border-box;
+            }
+
+            .search .search-header {
+                position: relative;
+                padding-bottom: 20px;
+
+            }
+
+            .search .search-hdr-text {
+                font-size: 40px;
+                width: auto;
+                color: rgb(51,51,51);
+                font-weight: 300;
+                text-align: center;
+                padding-bottom: 10px;
+                margin: 0;
+            }
+
+            .search-content {
+                text-align: center;
+            }
+
+            .search .browse {
+                font-size: 20px;
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 20px;
+            }
+
+            .search .browse .browse-button {
+                border: 1px solid rgb(0, 141, 208);
+                padding: 10px;
+                color: white;
+                background: rgb(0, 141, 208);
+            }
+
+            aptcopilot-search {
+                --aptcopilot-search-width: 610px;
+                --aptcopilot-search-margin-right: 0px;
+            }
+
+            .logo {
+                max-width: 88%;
+                min-width: 380px;
+                padding-bottom: 50px;
+                padding-top: 5px;
+            }
+
+            a {
+                text-decoration: none;
+                color: white;
+            }
+        </style>
+
+        <!-- <img src="images/home.jpeg" id="bgvid"> -->
+
+        <div class="search-wrapper">
+            <section class="search">
+                <div class="search-content">
+                    <header class="search-header">
+                        <h1 class="search-hdr-text">Find your next investment</h1>
+                    </header>
+
+                    <aptcopilot-search properties="[[properties]]"></aptcopilot-search>
+                    <!-- <div class="browse">
+                        <div class="browse-button">
+                            <a href="properties">Map View</a>
+                        </div>
+                    </div> -->
+                </div>
+            </section>
+        </div>
+
+    </template>
+
+    <script>
+        class AptcopilotHome extends Polymer.Element {
+            static get is() { return "aptcopilot-home"; }
+
+            static get properties() {
+                return {
+                    properties: {
+                        type: Array,
+                        value: []
+                    }
+                }
+            }
+
+        }
+        window.customElements.define(AptcopilotHome.is, AptcopilotHome);
+    </script>
+</dom-module>
