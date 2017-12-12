@@ -1,153 +1,297 @@
-<script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+
 <link rel="import" href="../bower_components/google-map/google-map.html">
-<template id="aptcopilot-property">
-    <style>
-        :host {
-            display: block;
-            margin: 20px;
-        }
 
-        .property-header {}
+<link rel="import" href="../src/aptcopilot-carousel.html">
 
-        .property-header-title {
-            outline: 1px red solid;
-            text-align: center;
-        }
+<dom-module id="aptcopilot-property">
+    <template>
+        <style>
+            :host {
+                display: block;
+                margin: 20px;
+                height: 90%
+            }
 
-        .property-header-info {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-gap: 50px;
-            grid-auto-rows: minmax(auto, auto);
-            margin-bottom: 20px;
-        }
+            .property-header-title {
+                text-align: center;
+            }
 
-        .property-header-pic {
-            outline: 1px red solid;
-            grid-column: 2;
-            grid-row: 1;
-        }
+            .property-header-info {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                grid-gap: 50px;
+                grid-auto-rows: minmax(auto, auto);
+                margin-bottom: 20px;
+            }
 
-        .property-header-basic {
-            outline: 1px red solid;
-            grid-column: 1;
-            grid-row: 1;
-        }
+            .property-header-pic {
+                outline: 1px red solid;
+                grid-column: 2;
+                grid-row: 1;
+            }
 
-        .property-header-owner {
-            outline: 1px red solid;
-            grid-column: 3;
-            grid-row: 1;
-        }
+            .property-header-basic {
+                grid-column: 1;
+                grid-row: 1;
+                padding: 15px;
+                font-size: 20px;
+            }
 
-        .property-content {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-gap: 50px;
-            grid-auto-rows: 300px 300px 1fr 1fr 1fr;
-        }
+            .property-header-basic div {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px;
+            }
 
-        .property-content-gallery {
-            outline: 1px red solid;
-            grid-column: 1;
-            grid-row: 1;
-        }
+            .property-header-owner {
+                grid-column: 2;
+                grid-row: 1;
+                font-size: 20px;
+            }
 
-        .property-content-units {
-            outline: 1px red solid;
-            grid-column: 1;
-            grid-row: 2;
-        }
+            .property-header-owner .private {
+                -webkit-filter: blur(5px);
+                -moz-filter: blur(5px);
+                -o-filter: blur(5px);
+                -ms-filter: blur(5px);
+                filter: blur(5px);
+            } 
 
-        .property-content-map {
-            outline: 1px red solid;
-            grid-column: 2;
-            grid-row: 1 / 3;
-        }
+            .property-header-owner div {
+                padding: 10px;
+            }
 
-        .property-content-ratings {
-            outline: 1px red solid;
-            grid-column: 1 / 3;
-            grid-row: 3;
-        }
+            .property-content {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                grid-gap: 50px;
+                grid-auto-rows: 300px 300px 1fr 1fr 1fr;
+            }
 
-        .property-content-amenities {
-            outline: 1px red solid;
-            grid-column: 1 / 3;
-            grid-row: 4;
-        }
+            aptcopilot-carousel {
+                grid-column: 1;
+                grid-row: 1;
+            }
 
-        .property-content-notes {
-            outline: 1px red solid;
-            grid-column: 1 / 3;
-            grid-row: 5;
-        }
+            img {
+                width: 100%;
+            }
 
-        #img {
-            height: 100%;
-            width: 100%;
-        }
+            .property-content-units {
+                grid-column: 1;
+                grid-row: 2;
+            }
+
+            .property-content-units th {
+                font-size: 20px;
+                padding: 5px;
+            }
+
+            tr {
+                text-align: center;
+                line-height: 3em;
+            }
+
+            .property-content-map {
+                grid-column: 2;
+                grid-row: 1 / 3;
+            }
+
+            .property-content-ratings {
+                display: flex;
+                justify-content: space-around;
+                grid-column: 1 / 3;
+                grid-row: 3;
+            }
 
 
-        google-map {
-            height: 100%;
-            width: 100%;
-        }
-    </style>
+            .property-content-rating {
+                display: flex;
+                justify-content: space-evenly;
+                border: 1px solid black;
+                border-radius: 5px;
+                align-items: center;
+                padding: 15px;
+                width: 150px;
+            }
 
-    <div class="property-header">
-        <h1 id="name" class="property-header-title"></h1>
-        <div class="property-header-info">
-            <div class="property-header-basic">
-                Basic property info
-            </div>
-            <div class="property-header-pic">
-                <img id="img">
-            </div>
-            <div class="property-header-owner">
-                Owners info
+            google-map {
+                height: 100%;
+                width: 100%;
+            }
+        </style>
+
+        <div class="property-header">
+            <h1 id="name" class="property-header-title">[[property.name]]</h1>
+            <div class="property-header-info">
+                <div class="property-header-basic">
+                    <div>
+                        <span>Units: [[property.units.total]]</span>
+                        <span>Year Built: [[property.year]]</span>
+                    </div>
+                    <div> Address: [[property.address]]</div>
+                    <div>
+                        <span>City: [[property.city]]</span>
+                        <span>State: [[property.state]]</span>
+                    </div>
+                    <div>
+                        <span>Zip: [[property.zip]]</span>
+                        <span>County: [[property.county]]</span>
+                    </div>
+
+
+                </div>
+                <div class="property-header-owner">
+                    Owners Information
+                    <div class="private">
+                        <div>
+                            <span>[[property.owner.name.first]]</span>
+                            <span>[[property.owner.name.last]]</span>
+                        </div>
+                        <div>[[property.owner.phone]]</div>
+                        <div>[[property.owner.email]]</div>
+                        <div>[[property.owner.notes]]</div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="property-content">
-        <div class="property-content-gallery">gallery</div>
-        <div class="property-content-units">Units</div>
-        <div class="property-content-map">
-            <google-map fit-to-markers api-key="AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4">
-                <!-- <google-map-marker draggable="true"></google-map-marker> -->
-            </google-map>
+        <div class="property-content">
+            <aptcopilot-carousel>
+                <img src="[[property.image1]]">
+                <img src="[[property.image2]]">
+                <img src="[[property.image3]]">
+            </aptcopilot-carousel>
+            <div class="property-content-units">
+                <table>
+                    <tr>
+                        <th>Units</th>
+                        <th>Bed/Bath</th>
+                        <th>Size</th>
+                        <th>Rent Monthly</th>
+                        <th>Rent per SF</th>
+                    </tr>
+                    <template is="dom-repeat" items="[[property.units.breakdown]]">
+                        <tr>
+                            <td>[[item.units]]</td>
+                            <td>[[item.bb]]</td>
+                            <td>[[item.size]]</td>
+                            <td>[[item.rent]]</td>
+                            <td>[[item.rentpersq]]</td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td>[[property.units.vacant.units]]</td>
+                        <td>Vacant</td>
+                        <td>[[property.units.vacant.size]]</td>
+                        <td>[[property.units.vacant.rent]]</td>
+                        <td>[[property.units.vacant.rentpersq]]</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="property-content-map">
+                <google-map fit-to-markers api-key="AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4" latitude="[[property.location.latitude]]" longitude="[[property.location.longitude]]" disable-default-ui>
+                    <google-map-marker latitude="[[property.location.latitude]]" longitude="[[property.location.longitude]]"></google-map-marker>
+                </google-map>
+            </div>
+            <div class="property-content-ratings">
+                <template is="dom-repeat" items="[[property.ratings]]">
+                    <div class="property-content-rating">
+                        <div>[[item.name]]</div>
+                        <div>[[item.rating]]</div>
+                    </div>
+                </template>
+            </div>
         </div>
-        <div class="property-content-ratings">Ratings</div>
-        <div class="property-content-amenities">Amenities</div>
-        <div class="property-content-notes">Notes</div>
-    </div>
+
+    </template>
+
+    <script>
+        class AptcopilotProperty extends Polymer.Element {
+            static get is() { return "aptcopilot-property" };
+
+            static get properties() {
+                return {
+                    property: {
+                        type: Object,
+                        value: function () {
+                            return {
+                                name: "Heritage Magna",
+                                units: {
+                                    total: 100,
+                                    breakdown: [
+                                        {
+                                            units: 57,
+                                            bb: "2/1",
+                                            size: 880,
+                                            rent: "$1200",
+                                            rentpersq: "$1.36"
+                                        },
+                                        {
+                                            units: 43,
+                                            bb: "2/2",
+                                            size: 950,
+                                            rent: "$1250",
+                                            rentpersq: "$1.31"
+                                        }],
+                                    vacant: {
+                                        units: 2,
+                                        size: 880,
+                                        rent: "$1200",
+                                        rentpersq: "$1.36"
+                                    }
+                                },
+                                year: 1980,
+                                address: "15222 S Dogwood Ln",
+                                city: "Lehi",
+                                state: "UT",
+                                zip: "84065",
+                                county: "Utah",
+                                location: {
+                                    longitude: -112.086815,
+                                    latitude: 40.69519
+                                },
+                                image1: "https://camo.mybb.com/e01de90be6012adc1b1701dba899491a9348ae79/687474703a2f2f7777772e6a71756572797363726970742e6e65742f696d616765732f53696d706c6573742d526573706f6e736976652d6a51756572792d496d6167652d4c69676874626f782d506c7567696e2d73696d706c652d6c69676874626f782e6a7067",
+                                image2: "https://www.w3schools.com/w3css/img_fjords.jpg",
+                                image3: "https://www.w3schools.com/w3css/img_lights.jpg",
+                                ratings: [
+                                    {
+                                        name: "location",
+                                        rating: "A+"
+                                    },
+                                    {
+                                        name: "Property Condition",
+                                        rating: "B"
+                                    },
+                                    {
+                                        name: "Amenities",
+                                        rating: "B"
+                                    },
+                                    {
+                                        name: "Access to Services",
+                                        rating: "A-"
+                                    }
+                                ],
+                                owner: {
+                                    name: {
+                                        first: "Jason",
+                                        last: "Wadsworth"
+                                    },
+                                    phone: "801-230-3794",
+                                    email: "jasonjwadsworth@gmail.com",
+                                    notes: "Prefers text or email"
+                                }
+                            };
+                        }
+                    }
+                }
+
+            }
 
 
-
-</template>
-
-<script>
-    let propertyTmpl = document.currentScript.ownerDocument.querySelector('#aptcopilot-property');
-    window.customElements.define('aptcopilot-property', class extends HTMLElement {
-        constructor() {
-            super();
-            let shadowRoot = this.attachShadow({ mode: 'open' });
-            shadowRoot.appendChild(propertyTmpl.content.cloneNode(true));
-            // shadowRoot.querySelector('#name').innerHTML = 'Name: ' + data.name; 
-        };
-
-        connectedCallback() {
-            let data = JSON.parse(this.getAttribute("data"));
-
-            this.shadowRoot.querySelector(".property-header-title").innerHTML = data.name;
-            this.shadowRoot.querySelector(".property-header-basic").innerHTML = data.info;
-
-            this.shadowRoot.querySelector("#img").setAttribute("src", "../images/home.jpeg");
-            
-            var marker = document.createElement("google-map-marker")
-            marker.setAttribute('latitude', data.location.latitude);
-            marker.setAttribute('longitude', data.location.longitude);
-            this.shadowRoot.querySelector("google-map").appendChild(marker)
         }
-    });
-</script>
+
+        window.customElements.define(AptcopilotProperty.is, AptcopilotProperty);
+    </script>

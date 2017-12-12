@@ -1,0 +1,119 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="aptcopilot-carousel">
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                position: relative;
+                overflow: hidden;
+            }
+
+            div> ::slotted(:not([selected])) {
+                display: none;
+            }
+
+            button {
+                position: absolute;
+                top: calc(50% - 20px);
+                padding: 0;
+                line-height: 40px;
+                border: none;
+                background: none;
+                color: #DDD;
+                font-size: 40px;
+                font-weight: bold;
+                opacity: 0.7;
+            }
+
+            button:hover,
+            button:focus {
+                opacity: 1;
+            }
+
+            #prevBtn {
+                left: 12px;
+            }
+
+            #nextBtn {
+                right: 12px;
+            }
+
+            button[disabled] {
+                opacity: 0.4;
+            }
+        </style>
+
+        <div>
+            <slot></slot>
+        </div>
+
+        <button id="prevBtn" on-click="previous">&#x276E;</button>
+        <button id="nextBtn" on-click="next">&#x276F;</button>
+
+    </template>
+
+    <script>
+
+        // Extend Polymer.Element base class
+        class AptcopilotCarousel extends Polymer.Element {
+
+            static get is() { return 'aptcopilot-carousel' }
+
+            static get properties() {
+                return {
+                    selected: {
+                        type: Object,
+                        observer: '_selectedChanged'
+                    }
+                };
+            }
+
+            connectedCallback() {
+                super.connectedCallback();
+
+                this.shadowRoot.addEventListener('slotchange', this._resetSelected.bind(this));
+                this._resetSelected();
+            }
+
+            _resetSelected() {
+                if (!this.selected || this.selected.parentElement !== this) {
+                    this.selected = this.firstElementChild;
+                }
+            }
+
+            _selectedChanged(selected, oldSelected) {
+                if (oldSelected) oldSelected.removeAttribute('selected');
+                if (selected) selected.setAttribute('selected', '');
+
+                if (selected) {
+                    this.$.prevBtn.disabled = !selected.previousElementSibling;
+                    this.$.nextBtn.disabled = !selected.nextElementSibling;
+                } else {
+                    this.$.prevBtn.disabled = true;
+                    this.$.nextBtn.disabled = true;
+                }
+            }
+
+            previous() {
+                const elem = this.selected && this.selected.previousElementSibling;
+                if (elem) {
+                    this.selected = elem;
+                }
+            }
+
+            next() {
+                const elem = this.selected && this.selected.nextElementSibling;
+                if (elem) {
+                    this.selected = elem;
+                }
+            }
+
+        }
+
+        // Register custom element definition using standard platform API
+        window.customElements.define(AptcopilotCarousel.is, AptcopilotCarousel);
+
+    </script>
+</dom-module>

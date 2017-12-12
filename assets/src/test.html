@@ -7,22 +7,29 @@
 
     <link rel="icon" href="images/favicon.ico" type="image/gif" sizes="16x16">
 
-    <link rel="import" href="../elements/aptcopilot-properties.html">
-    <!-- <link rel="import" href="elements/aptcopilot-search.html"> -->
-    <!-- <link rel="import" href="scripts/config.js"> -->
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    
+
+    <link rel="import" href="aptcopilot-header.html">
+    <link rel="import" href="aptcopilot-property.html">
+    <link rel="import" href="../scripts/config.js">
     <style>
         html, body {
             margin: 0;
             height: 100%;
         }
+
+        aptcopilot-header {
+                --aptcopilot-header-height: 60px;
+            }
     </style>
 
 </head>
 
 <body>
 
-    <aptcopilot-header></aptcopilot-header>
-    <aptcopilot-properties ></aptcopilot-properties>
+    <aptcopilot-header search></aptcopilot-header>
+    <aptcopilot-property ></aptcopilot-property>
 
    <script>
        document.querySelector('aptcopilot-header').addEventListener('selected', function(e) {

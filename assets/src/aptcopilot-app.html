@@ -4,6 +4,7 @@
 <link rel="lazy-import" href="../src/aptcopilot-home.html">
 <link rel="lazy-import" href="../src/aptcopilot-contact.html">
 <link rel="lazy-import" href="../src/aptcopilot-properties.html">
+<link rel="lazy-import" href="../src/aptcopilot-property.html">
 <link rel="import" href="../scripts/config.js">
 
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
@@ -31,6 +32,10 @@
 
         <app-location route="{{route}}" use-hash-as-path></app-location>
         <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+        <!-- <app-route-converter
+        path="{{path}}"
+        query-params="{{queryParams}}"
+        route="{{route}}"> -->
 
         <aptcopilot-header properties="[[properties]]"></aptcopilot-header>
 
@@ -38,6 +43,7 @@
             <aptcopilot-home class="content" name="home" properties="[[properties]]"></aptcopilot-home>
             <aptcopilot-properties class="content" name="properties" properties="{{properties}}"></aptcopilot-properties>
             <aptcopilot-contact class="content" name="contact"></aptcopilot-contact>
+            <aptcopilot-property class="content" name="property"></aptcopilot-property>
         </iron-pages>
 
 
