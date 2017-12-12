@@ -1,8 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 
 <link rel="import" href="../src/aptcopilot-header.html">
-<link rel="import" href="../src/aptcopilot-search.html">
-<link rel="import" href="../src/aptcopilot-home.html">
+<link rel="lazy-import" href="../src/aptcopilot-home.html">
 <link rel="lazy-import" href="../src/aptcopilot-contact.html">
 <link rel="lazy-import" href="../src/aptcopilot-properties.html">
 <link rel="import" href="../scripts/config.js">
@@ -30,12 +29,12 @@
             }
         </style>
 
-        <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
+        <app-location route="{{route}}" use-hash-as-path></app-location>
         <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
         <aptcopilot-header properties="[[properties]]"></aptcopilot-header>
 
-        <iron-pages selected="[[page]]" attr-for-selected='name' role="main">
+        <iron-pages selected="[[page]]" attr-for-selected='name' role="main" fallback-selection="view404">
             <aptcopilot-home class="content" name="home" properties="[[properties]]"></aptcopilot-home>
             <aptcopilot-properties class="content" name="properties" properties="{{properties}}"></aptcopilot-properties>
             <aptcopilot-contact class="content" name="contact"></aptcopilot-contact>
@@ -70,7 +69,8 @@
 
             static get observers() {
                 return [
-                    '_routePageChanged(routeData.page)',
+                    '_routeChanged(route.*)',
+                    '_routePageChanged(routeData.page)'
                 ];
             }
 
@@ -83,6 +83,9 @@
             propertiesLoaded(data) {
                 console.log(data)
                 this.properties = data;
+            }
+
+            _routeChanged(change) {
             }
 
             _routePageChanged(page) {
