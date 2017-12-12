@@ -74,8 +74,8 @@
         </div>
 
         <div class="properties-content">
-            <google-map fit-to-markers map={{map}} api-key="AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4" latitude="39.630683877" longitude="-111.77931"
-                zoom="8" on-latitude-changed="mapChanged" on-longitude-changed="mapChanged" on-google-map-ready="mapReady" disable-default-ui>
+            <google-map fit-to-markers drag-events mouse-events map={{map}} api-key="AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4" latitude="39.630683877" longitude="-111.77931"
+                zoom="8" on-google-map-dragend="mapChanged" on-zoom-changed="mapChanged" disable-default-ui>
                 <template is="dom-repeat" items="[[mapFilteredProperites]]">
                     <google-map-marker latitude="[[item.lat]]" longitude="[[item.lng]]" on-google-map-marker-click="click" icon="../images/mapdot.png">
                         <div style="width:300px; height: 228px; padding: 5px;">
@@ -106,7 +106,6 @@
                             <h3> City: [[item.city]]</h3>
                             <h3> Type: [[item.type]]</h3>
                         </div>
-
                     </template>
                 </iron-list>
             </div>
@@ -121,8 +120,7 @@
                 return {
                     properties: {
                         type: Array,
-                        value: [],
-                        observer: "_propertiesChanged"
+                        value: []
                     },
                     mapFilteredProperites: {
                         type: Array,
@@ -134,8 +132,9 @@
                 }
             }
 
-            mapReady(e) {
-                console.log("ready")
+            connectedCallback() {
+                super.connectedCallback();
+
                 this.mapFilteredProperites = this.properties;
             }
 
@@ -150,16 +149,6 @@
                     })
                 }
             }
-
-            propertiesLoaded(data) {
-                this.mapFilteredProperites = data;
-                this.properties = data;
-            }
-
-            mapFilterProperties(that, f) {
-                this.mapFilteredProperites = this.properties.filter(f);
-            }
-
         }
         window.customElements.define(AptcopilotProperties.is, AptcopilotProperties);
     </script>
