@@ -1,5 +1,5 @@
 (function() {
     window.config = {
-        apibaseurl: "http://localhost:8001"
+        apibaseurl: "http://13.57.189.227:8001"
     }
 })();

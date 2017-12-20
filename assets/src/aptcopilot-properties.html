@@ -4,6 +4,7 @@
 <link rel="import" href="../src/aptcopilot-header.html">
 
 <link rel="import" href="../bower_components/google-map/google-map.html">
+<link rel="import" href="../bower_components/google-map/google-map-marker.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 
 <script src="../scripts/properties.js"></script>
@@ -74,10 +75,10 @@
         </div>
 
         <div class="properties-content">
-            <google-map fit-to-markers drag-events mouse-events map={{map}} api-key="AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4" latitude="39.630683877" longitude="-111.77931"
-                zoom="8" on-google-map-dragend="mapChanged" on-zoom-changed="mapChanged" disable-default-ui>
+            <google-map fit-to-markers drag-events mouse-events map={{map}} api-key="AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4" latitude="39.630683877"
+                longitude="-111.77931" zoom="8" on-google-map-dragend="mapChanged" on-zoom-changed="mapChanged" disable-default-ui>
                 <template is="dom-repeat" items="[[mapFilteredProperites]]">
-                    <google-map-marker latitude="[[item.lat]]" longitude="[[item.lng]]" on-google-map-marker-click="click" icon="../images/mapdot.png">
+                    <google-map-marker latitude="[[item.lat]]" longitude="[[item.lng]]" icon="../images/mapdot.png">
                         <div style="width:300px; height: 228px; padding: 5px;">
                             <!-- <img src='../proppics/' + encodeURI([[item.mainpic]]) style="height: 60%; width: 100%" id='pic'> -->
                             <img src="../images/home.jpeg" style="height: 60%; width: 100%" id='pic'>
@@ -139,15 +140,38 @@
             }
 
             mapChanged(e) {
-                var lat = e.target.latitude
-                var long = e.target.longitude
-
                 if (this.map) {
                     var bounds = this.map.getBounds();
                     this.mapFilteredProperites = this.properties.filter(function (prop) {
                         return bounds.contains(new google.maps.LatLng(parseFloat(prop.lat), parseFloat(prop.lng)))
                     })
                 }
+            }
+
+            loadAllProperties() {
+                this.mapFilteredProperites = this.properties;
+            }
+
+            loadMarketRateProperties() {
+                var options = {
+                    keys: ['type'],
+                    threshold: 0
+                }
+
+                var fuse = new Fuse(this.properties, options)
+
+                this.mapFilteredProperites = fuse.search("Market Rate")
+            }
+
+            loadAffordableProperties() {
+                var options = {
+                    keys: ['type'],
+                    threshold: 0
+                }
+
+                var fuse = new Fuse(this.properties, options)
+
+                this.mapFilteredProperites = fuse.search("Affordable")
             }
         }
         window.customElements.define(AptcopilotProperties.is, AptcopilotProperties);
