@@ -24,7 +24,6 @@ docker_build:
 	docker build -t hljman/aptcopilot .
 
 upload: docker_zip
-	# polymer build --root assets
 	scp -rv -i ~/.ssh/aws aptcopilot.tgz ubuntu@$(INSTANCE):/home/ubuntu/
 
 ssh: 
@@ -35,3 +34,5 @@ docker_zip: docker_build
 
 # docker_load:
 # 	gunzip -c aptcopilot.tgz | docker load
+
+publish: docker_zip upload ssh

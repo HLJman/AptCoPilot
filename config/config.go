@@ -2,7 +2,6 @@ package config
 
 import (
 	"io/ioutil"
-	"log"
 	"os"
 )
 
@@ -13,7 +12,8 @@ func DBUsername() string {
 func DBPassword() string {
 	data, err := readFile(os.Getenv("DB_PASSWORD"))
 	if err != nil {
-		log.Fatal(err)
+		return ""
+		// log.Fatal(err)
 	}
 
 	return data

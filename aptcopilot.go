@@ -9,6 +9,7 @@ import (
 	"github.com/HLJman/AptCoPilot/internal/storage"
 	"github.com/HLJman/AptCoPilot/route"
 	goji "goji.io"
+	"goji.io/pat"
 )
 
 func main() {
@@ -19,15 +20,10 @@ func main() {
 
 	mux := goji.NewMux()
 	route.Register(mux)
-	go func() {
-		fmt.Println("Starting server")
-		err := http.ListenAndServe(":8001", mux)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}()
+	mux.Handle(pat.New("/*"), http.FileServer(http.Dir("./assets")))
 
-	err = http.ListenAndServe(":80", http.FileServer(http.Dir("./assets")))
+	fmt.Println("Starting server")
+	err = http.ListenAndServe(":8000", mux)
 	if err != nil {
 		log.Fatal(err)
 	}
