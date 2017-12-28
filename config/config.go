@@ -27,6 +27,10 @@ func DBDatabase() string {
 	return os.Getenv("DB_NAME")
 }
 
+func Local() bool {
+	return os.Getenv("LOCAL") == "true"
+}
+
 func readFile(path string) (string, error) {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {

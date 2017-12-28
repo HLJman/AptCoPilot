@@ -13,9 +13,11 @@ import (
 )
 
 func main() {
-	err := storage.Connect(config.DBUsername(), config.DBPassword(), config.DBServer(), config.DBDatabase())
-	if err != nil {
-		log.Fatal(err)
+	if config.Local() {
+		err := storage.Connect(config.DBUsername(), config.DBPassword(), config.DBServer(), config.DBDatabase())
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	mux := goji.NewMux()
@@ -23,7 +25,7 @@ func main() {
 	mux.Handle(pat.New("/*"), http.FileServer(http.Dir("./assets")))
 
 	fmt.Println("Starting server")
-	err = http.ListenAndServe(":8000", mux)
+	err := http.ListenAndServe(":8000", mux)
 	if err != nil {
 		log.Fatal(err)
 	}
