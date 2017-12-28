@@ -9,10 +9,12 @@ import (
 	"goji.io/pat"
 )
 
-func Register(mux *goji.Mux) {
-	mux.Use(corsHandler)
-	mux.HandleFunc(pat.Get("/properties"), handler.Properties)
-	mux.HandleFunc(pat.Get("/properties/:id"), handler.Property)
+func Register(root *goji.Mux) {
+	root.Use(corsHandler)
+	subMux := goji.SubMux()
+	root.Handle(pat.Get("/api/*"), subMux)
+	subMux.HandleFunc(pat.Get("/properties"), handler.Properties)
+	subMux.HandleFunc(pat.Get("/properties/:id"), handler.Property)
 }
 
 func corsHandler(h http.Handler) http.Handler {

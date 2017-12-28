@@ -1,5 +1,5 @@
 (function() {
     window.config = {
-        apibaseurl: "https://aptcopilot.com"
+        apibaseurl: "https://aptcopilot.com/api"
     }
 })();
