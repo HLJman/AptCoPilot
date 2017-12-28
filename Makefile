@@ -6,9 +6,8 @@ INSTANCE=13.57.189.227
 default: fmt vet build
 
 # Build
-build: 
+build:
 	go build -ldflags "-s" -o $(NAME)
-	# polymer build --root assets
 
 fmt: 
 	go fmt $$(go list ./... | grep -v /vendor/)
@@ -23,16 +22,17 @@ docker_build:
 	docker run --rm -e "CGO_ENABLED=0" -e "GOPATH=/go" -v "$(CURRENT):$(DEST)" -w "$(DEST)" golang:1.9.2 make
 	docker build -t hljman/aptcopilot .
 
-upload: docker_zip
+assets_build:
+	cd assets; polymer build
+
+upload:
 	scp -rv -i ~/.ssh/aws aptcopilot.tgz ubuntu@$(INSTANCE):/home/ubuntu/
 
 ssh: 
-	ssh -i ~/.ssh/aws ubuntu@$(INSTANCE)
+	ssh -i ~/.ssh/aws ubuntu@$(INSTANCE) "gunzip -c aptcopilot.tgz | docker load && docker-compose up -d"
 
-docker_zip: docker_build
+docker_zip: assets_build docker_build
 	docker save hljman/aptcopilot | gzip > aptcopilot.tgz
 
-# docker_load:
-# 	gunzip -c aptcopilot.tgz | docker load
 
 publish: docker_zip upload ssh
