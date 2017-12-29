@@ -23,3 +23,7 @@ The server is in the root of the project and serves both the web app and REST ap
 ## Publish to AWS
 
         make publish
+
+## SSH to AWS Server
+
+        make ssh
