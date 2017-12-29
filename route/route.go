@@ -1,6 +1,7 @@
 package route
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/HLJman/AptCoPilot/route/handler"
@@ -19,6 +20,7 @@ func Register(root *goji.Mux) {
 
 func corsHandler(h http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println(r.RequestURI)
 		if r.Method == "OPTIONS" {
 			w.Header().Set("Access-Control-Allow-Methods", "*")
 			w.Header().Set("Access-Control-Allow-Origin", "*")

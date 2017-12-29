@@ -22,6 +22,13 @@ func main() {
 
 	mux := goji.NewMux()
 	route.Register(mux)
+	mux.Handle(pat.New("/src"), http.FileServer(http.Dir("./assets/src")))
+	mux.HandleFunc(pat.New("/properties"), func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./assets/index.html")
+	})
+	mux.HandleFunc(pat.New("/contact"), func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./assets/index.html")
+	})
 	mux.Handle(pat.New("/*"), http.FileServer(http.Dir("./assets")))
 
 	fmt.Println("Starting server")
