@@ -3,7 +3,7 @@ CURRENT=${CURDIR}
 DEST=/go/src/github.com/HLJman/$(NAME)
 INSTANCE=13.57.189.227
 REPO=joshadambell43/aptcopilot
-VERSION=0.0.1
+VERSION=0.0.2
 
 default: fmt vet build
 
@@ -35,10 +35,12 @@ assets_build:
 docker_build:
 	docker run --rm -e "CGO_ENABLED=0" -e "GOPATH=/go" -v "$(CURRENT):$(DEST)" -w "$(DEST)" golang:1.9.2 make
 	docker build -t $(REPO):$(VERSION) .
+	docker tag $(REPO):$(VERSION) $(REPO):latest
 
 docker_push: assets_build docker_build
 	docker login -u ${DOCKER_HUB_USERNAME} -p ${DOCKER_HUB_PASSWORD}
 	docker push $(REPO):$(VERSION)
+	docker push $(REPO):latest
 
 publish: docker_push
-	ssh -i ~/.ssh/aws ubuntu@$(INSTANCE) "export DOCKER_HUB_REPO=$(REPO):$(VERSION) && export DOCKER_HUB_USERNAME=${DOCKER_HUB_USERNAME} && export DOCKER_HUB_PASSWORD=${DOCKER_HUB_PASSWORD} && ./run"
+	ssh -i ~/.ssh/aws ubuntu@$(INSTANCE) "export DOCKER_HUB_REPO=$(REPO) && export DOCKER_HUB_USERNAME=${DOCKER_HUB_USERNAME} && export DOCKER_HUB_PASSWORD=${DOCKER_HUB_PASSWORD} && ./run"
