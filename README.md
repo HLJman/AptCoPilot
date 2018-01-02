@@ -22,6 +22,12 @@ The server is in the root of the project and serves both the web app and REST ap
 
 ## Publish to AWS
 
+- SSH to server for env variables:
+        
+  - `DOCKER_HUB_USERNAME`
+        
+  - `DOCKER_HUB_PASSWORD`
+        
         make publish
 
 ## SSH to AWS Server
