@@ -1,7 +1,9 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="../bower_components/google-map/google-map.html">
+<link rel="import" href="../bower_components/google-map/google-map-marker.html">
 
 <link rel="import" href="../src/aptcopilot-carousel.html">
 
@@ -58,7 +60,7 @@
                 -o-filter: blur(5px);
                 -ms-filter: blur(5px);
                 filter: blur(5px);
-            } 
+            }
 
             .property-header-owner div {
                 padding: 10px;
@@ -125,21 +127,21 @@
         </style>
 
         <div class="property-header">
-            <h1 id="name" class="property-header-title">[[property.name]]</h1>
+            <h1 id="name" class="property-header-title">[[property.Name]]</h1>
             <div class="property-header-info">
                 <div class="property-header-basic">
                     <div>
-                        <span>Units: [[property.units.total]]</span>
-                        <span>Year Built: [[property.year]]</span>
+                        <span>Units: [[property.Units.Total]]</span>
+                        <span>Year Built: [[property.Year]]</span>
                     </div>
-                    <div> Address: [[property.address]]</div>
+                    <div> Address: [[property.Location.Address]]</div>
                     <div>
-                        <span>City: [[property.city]]</span>
-                        <span>State: [[property.state]]</span>
+                        <span>City: [[property.Location.City]]</span>
+                        <span>State: [[property.Location.State]]</span>
                     </div>
                     <div>
-                        <span>Zip: [[property.zip]]</span>
-                        <span>County: [[property.county]]</span>
+                        <span>Zip: [[property.Location.Zip]]</span>
+                        <span>County: [[property.Location.County]]</span>
                     </div>
 
 
@@ -148,22 +150,18 @@
                     Owners Information
                     <div class="private">
                         <div>
-                            <span>[[property.owner.name.first]]</span>
-                            <span>[[property.owner.name.last]]</span>
+                            <span>[[property.Owner.Name.First]]</span>
+                            <span>[[property.Owner.Name.Last]]</span>
                         </div>
-                        <div>[[property.owner.phone]]</div>
-                        <div>[[property.owner.email]]</div>
-                        <div>[[property.owner.notes]]</div>
+                        <div>[[property.Owner.Phone]]</div>
+                        <div>[[property.Owner.Email]]</div>
+                        <div>[[property.Owner.Notes]]</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="property-content">
-            <aptcopilot-carousel>
-                <img src="[[property.image1]]">
-                <img src="[[property.image2]]">
-                <img src="[[property.image3]]">
-            </aptcopilot-carousel>
+            <aptcopilot-carousel images=[[property.Images]]></aptcopilot-carousel>
             <div class="property-content-units">
                 <table>
                     <tr>
@@ -173,38 +171,41 @@
                         <th>Rent Monthly</th>
                         <th>Rent per SF</th>
                     </tr>
-                    <template is="dom-repeat" items="[[property.units.breakdown]]">
+                    <template is="dom-repeat" items="[[property.Units.Breakdown]]">
                         <tr>
-                            <td>[[item.units]]</td>
-                            <td>[[item.bb]]</td>
-                            <td>[[item.size]]</td>
-                            <td>[[item.rent]]</td>
-                            <td>[[item.rentpersq]]</td>
+                            <td>[[item.Units]]</td>
+                            <td>[[item.BB]]</td>
+                            <td>[[item.Size]]</td>
+                            <td>[[item.Rent]]</td>
+                            <td>[[item.Rentpersq]]</td>
                         </tr>
                     </template>
                     <tr>
-                        <td>[[property.units.vacant.units]]</td>
+                        <td>[[property.Units.Vacant.Units]]</td>
                         <td>Vacant</td>
-                        <td>[[property.units.vacant.size]]</td>
-                        <td>[[property.units.vacant.rent]]</td>
-                        <td>[[property.units.vacant.rentpersq]]</td>
+                        <td>[[property.Units.Vacant.Size]]</td>
+                        <td>[[property.Units.Vacant.Rent]]</td>
+                        <td>[[property.Units.Vacant.Rentpersq]]</td>
                     </tr>
                 </table>
             </div>
             <div class="property-content-map">
-                <google-map fit-to-markers api-key="AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4" latitude="[[property.location.latitude]]" longitude="[[property.location.longitude]]" disable-default-ui>
-                    <google-map-marker latitude="[[property.location.latitude]]" longitude="[[property.location.longitude]]"></google-map-marker>
+                <google-map fit-to-markers api-key="AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4" latitude="[[property.Location.Latitude]]" longitude="[[property.Location.Longitude]]"
+                    disable-default-ui>
+                    <google-map-marker latitude="[[property.Location.Latitude]]" longitude="[[property.Location.Longitude]]"></google-map-marker>
                 </google-map>
             </div>
             <div class="property-content-ratings">
-                <template is="dom-repeat" items="[[property.ratings]]">
+                <template is="dom-repeat" items="[[property.Ratings]]">
                     <div class="property-content-rating">
-                        <div>[[item.name]]</div>
-                        <div>[[item.rating]]</div>
+                        <div>[[item.Name]]</div>
+                        <div>[[item.Rating]]</div>
                     </div>
                 </template>
             </div>
         </div>
+
+        <iron-ajax auto url=[[url]] handle-as="json" last-response="{{property}}" debounce-duration="300"></iron-ajax>
 
     </template>
 
@@ -214,87 +215,21 @@
 
             static get properties() {
                 return {
+                    url: {
+                        type: String,
+                        value: config.apibaseurl + "/properties/1"
+                    },
                     property: {
                         type: Object,
-                        value: function () {
-                            return {
-                                name: "Heritage Magna",
-                                units: {
-                                    total: 100,
-                                    breakdown: [
-                                        {
-                                            units: 57,
-                                            bb: "2/1",
-                                            size: 880,
-                                            rent: "$1200",
-                                            rentpersq: "$1.36"
-                                        },
-                                        {
-                                            units: 43,
-                                            bb: "2/2",
-                                            size: 950,
-                                            rent: "$1250",
-                                            rentpersq: "$1.31"
-                                        }],
-                                    vacant: {
-                                        units: 2,
-                                        size: 880,
-                                        rent: "$1200",
-                                        rentpersq: "$1.36"
-                                    }
-                                },
-                                year: 1980,
-                                address: "15222 S Dogwood Ln",
-                                city: "Lehi",
-                                state: "UT",
-                                zip: "84065",
-                                county: "Utah",
-                                location: {
-                                    longitude: -112.086815,
-                                    latitude: 40.69519
-                                },
-                                image1: "https://camo.mybb.com/e01de90be6012adc1b1701dba899491a9348ae79/687474703a2f2f7777772e6a71756572797363726970742e6e65742f696d616765732f53696d706c6573742d526573706f6e736976652d6a51756572792d496d6167652d4c69676874626f782d506c7567696e2d73696d706c652d6c69676874626f782e6a7067",
-                                image2: "https://www.w3schools.com/w3css/img_fjords.jpg",
-                                image3: "https://www.w3schools.com/w3css/img_lights.jpg",
-                                ratings: [
-                                    {
-                                        name: "location",
-                                        rating: "A+"
-                                    },
-                                    {
-                                        name: "Property Condition",
-                                        rating: "B"
-                                    },
-                                    {
-                                        name: "Amenities",
-                                        rating: "B"
-                                    },
-                                    {
-                                        name: "Access to Services",
-                                        rating: "A-"
-                                    }
-                                ],
-                                owner: {
-                                    name: {
-                                        first: "Jason",
-                                        last: "Wadsworth"
-                                    },
-                                    phone: "801-230-3794",
-                                    email: "jasonjwadsworth@gmail.com",
-                                    notes: "Prefers text or email"
-                                }
-                            };
-                        }
+                        value: {}
                     }
                 }
-
             }
 
-            connectedCallback() {
-    super.connectedCallback();
-    console.log('my-element created!');
-  }
 
+            handleResponse(e) {
+                console.log(e)
+            }
 
         }
 
