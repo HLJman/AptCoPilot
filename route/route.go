@@ -11,10 +11,13 @@ import (
 
 func Register(root *goji.Mux) {
 	root.Use(corsHandler)
+
 	subMux := goji.SubMux()
 	root.Handle(pat.Get("/api/*"), subMux)
 	subMux.HandleFunc(pat.Get("/properties"), handler.Properties)
 	subMux.HandleFunc(pat.Get("/properties/:id"), handler.Property)
+
+	root.Handle(pat.New("/*"), http.FileServer(http.Dir("./assets")))
 }
 
 func corsHandler(h http.Handler) http.Handler {

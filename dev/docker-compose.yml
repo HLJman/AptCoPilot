@@ -9,6 +9,11 @@ networks:
 services:
   aptcopilot:
     image: hljman/aptcopilot
+    environment:
+      - DB_USERNAME=admin
+      - DB_PASSWORD=/etc/db_password
+      - DB_SERVER=aptcopilot-test.ck7rzkuy8vhb.us-west-1.rds.amazonaws.com:3306
+      - DB_NAME=aptcopilot_test
     labels:
       - traefik.backend=aptcopilot
       - traefik.enable=true
