@@ -8,7 +8,7 @@ networks:
 
 services:
   aptcopilot:
-    image: hljman/aptcopilot
+    image: joshadambell43/aptcopilot
     environment:
       - DB_USERNAME=admin
       - DB_PASSWORD=/etc/db_password
@@ -20,8 +20,6 @@ services:
       - traefik.docker.network=proxy
       - traefik.main.frontend.rule=Host:aptcopilot.com
       - traefik.main.port=8000
-      - traefik.api.port=8000
-      - traefik.api.frontend.rule=Host:aptcopilot.com;Path:/properties
     networks:
       - proxy
     ports:
