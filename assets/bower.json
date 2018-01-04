@@ -22,6 +22,7 @@
     "app-route": "PolymerElements/app-route#^2.0.3",
     "iron-selector": "PolymerElements/iron-selector#^2.0.1",
     "iron-icons": "PolymerElements/iron-icons#^2.0.1",
-    "iron-ajax": "PolymerElements/iron-ajax#^2.0.6"
+    "iron-ajax": "PolymerElements/iron-ajax#^2.0.6",
+    "mp-slider": "mpachnis/mp-slider#^2.0.2"
   }
 }
