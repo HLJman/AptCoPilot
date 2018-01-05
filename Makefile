@@ -2,7 +2,7 @@ NAME=AptCoPilot
 CURRENT=${CURDIR}
 DEST=/go/src/github.com/HLJman/$(NAME)
 INSTANCE=13.57.189.227
-REPO=joshadambell43/aptcopilot
+REPO=hljman/aptcopilot
 VERSION=0.0.2
 
 default: fmt vet build
