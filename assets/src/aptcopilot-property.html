@@ -6,32 +6,27 @@
 <link rel="import" href="../bower_components/google-map/google-map-marker.html">
 <link rel="import" href="../bower_components/mp-slider/mp-slider.html">
 
-<link rel="import" href="../src/aptcopilot-carousel.html">
-
 <dom-module id="aptcopilot-property">
     <template>
         <style>
-            :host {
+             :host {
                 display: flex;
                 margin: 20px;
                 height: 90%;
-                margin: 0px 150px;
+                margin: 0px 11%;
             }
 
-            .property-header-title {
+            .property-title {
                 text-align: center;
+                font-size: 40px;
             }
 
-            .property-header-basic {
+            .property-info {
                 padding: 15px;
-                font-size: 20px;
             }
 
-            .property-header-basic div {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px;
+            .property-address {
+                font-size: 20px;
             }
 
             .property-header-owner {
@@ -54,9 +49,7 @@
                 width: 100%;
             }
 
-            .property-content-units {
-                
-            }
+            .property-content-units {}
 
             .property-content-units th {
                 font-size: 20px;
@@ -93,92 +86,99 @@
                 height: 100%;
                 width: 100%;
             }
-
-
             /* new */
 
             .image-carousel {
-                width: 70%;
                 padding: 10px;
             }
         </style>
 
         <iron-ajax auto url=[[url]] handle-as="json" on-response="handleResponse" last-response="{{property}}" debounce-duration="300"></iron-ajax>
 
-        <h1 id="name" class="property-header-title">[[property.Name]]</h1>
-        <div>
-            <span>Units: [[property.Units.Total]]</span>
-            <span>Year Built: [[property.Year]]</span>
-            <span> Address: [[property.Location.Address]]</span>
-            <span>City: [[property.Location.City]]</span>
-            <span>State: [[property.Location.State]]</span>
-            <span>Zip: [[property.Location.Zip]]</span>
-            <span>County: [[property.Location.County]]</span>
-        </div>
+        <h1 id="name" class="property-title">[[property.Name]]</h1>
         <div style="display:flex">
-            <div class="image-carousel"></div>
-            <div class="property-header-owner">
-                    Owners Information
-                    <div class="private">
-                        <div>
-                            <span>[[property.Owner.Name.First]]</span>
-                            <span>[[property.Owner.Name.Last]]</span>
-                        </div>
-                        <div>[[property.Owner.Phone]]</div>
-                        <div>[[property.Owner.Email]]</div>
-                        <div>[[property.Owner.Notes]]</div>
+            <div style="width: 70%">
+                <div class="property-info">
+                    <div class="property-address">[[property.Location.Address]]</div>
+                    <div>
+                        <span> [[property.Location.City]], [[property.Location.State]] [[property.Location.Zip]]</span>
                     </div>
+                    <span> [[property.Units.Total]] Units - [[property.Year]]</span>
                 </div>
-        </div>
-        <div class="property-content-map">
-                <google-map fit-to-markers api-key="AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4" latitude="[[property.Location.Latitude]]" longitude="[[property.Location.Longitude]]"
-                    disable-default-ui>
-                    <google-map-marker latitude="[[property.Location.Latitude]]" longitude="[[property.Location.Longitude]]"></google-map-marker>
-                </google-map>
+
+                <div class="image-carousel"></div>
             </div>
 
-            <div class="property-content-units">
-                <table>
-                    <tr>
-                        <th>Units</th>
-                        <th>Bed/Bath</th>
-                        <th>Size</th>
-                        <th>Rent Monthly</th>
-                        <th>Rent per SF</th>
-                    </tr>
-                    <template is="dom-repeat" items="[[property.Units.Breakdown]]">
-                        <tr>
-                            <td>[[item.Units]]</td>
-                            <td>[[item.BB]]</td>
-                            <td>[[item.Size]]</td>
-                            <td>[[item.Rent]]</td>
-                            <td>[[item.RentPerSq]]</td>
-                        </tr>
-                    </template>
-                    <tr>
-                        <td>[[property.Units.Vacant.Units]]</td>
-                        <td>Vacant</td>
-                        <td>[[property.Units.Vacant.Size]]</td>
-                        <td>[[property.Units.Vacant.Rent]]</td>
-                        <td>[[property.Units.Vacant.RentPerSq]]</td>
-                    </tr>
-                </table>
-            </div>
-            
-            <div class="property-content-ratings">
-                <template is="dom-repeat" items="[[property.Ratings]]">
-                    <div class="property-content-rating">
-                        <div>[[item.Name]]</div>
-                        <div>[[item.Rating]]</div>
+
+
+
+
+            <div class="property-header-owner">
+                Owners Information
+                <div class="private">
+                    <div>
+                        <span>[[property.Owner.Name.First]]</span>
+                        <span>[[property.Owner.Name.Last]]</span>
                     </div>
-                </template>
+                    <div>[[property.Owner.Phone]]</div>
+                    <div>[[property.Owner.Email]]</div>
+                    <div>[[property.Owner.Notes]]</div>
+                </div>
             </div>
+
+
+        </div>
+        <div class="property-content-map">
+            <google-map fit-to-markers api-key="AIzaSyDwZt-Shm5g3q8oCNYX6vQ97jo81FIrij4" latitude="[[property.Location.Latitude]]" longitude="[[property.Location.Longitude]]"
+                disable-default-ui>
+                <google-map-marker latitude="[[property.Location.Latitude]]" longitude="[[property.Location.Longitude]]"></google-map-marker>
+            </google-map>
+        </div>
+
+        <div class="property-content-units">
+            <table>
+                <tr>
+                    <th>Units</th>
+                    <th>Bed/Bath</th>
+                    <th>Size</th>
+                    <th>Rent Monthly</th>
+                    <th>Rent per SF</th>
+                </tr>
+                <template is="dom-repeat" items="[[property.Units.Breakdown]]">
+                    <tr>
+                        <td>[[item.Units]]</td>
+                        <td>[[item.BB]]</td>
+                        <td>[[item.Size]]</td>
+                        <td>[[item.Rent]]</td>
+                        <td>[[item.RentPerSq]]</td>
+                    </tr>
+                </template>
+                <tr>
+                    <td>[[property.Units.Vacant.Units]]</td>
+                    <td>Vacant</td>
+                    <td>[[property.Units.Vacant.Size]]</td>
+                    <td>[[property.Units.Vacant.Rent]]</td>
+                    <td>[[property.Units.Vacant.RentPerSq]]</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="property-content-ratings">
+            <template is="dom-repeat" items="[[property.Ratings]]">
+                <div class="property-content-rating">
+                    <div>[[item.Name]]</div>
+                    <div>[[item.Rating]]</div>
+                </div>
+            </template>
+        </div>
 
     </template>
 
     <script>
         class AptcopilotProperty extends Polymer.Element {
-            static get is() { return "aptcopilot-property" };
+            static get is() {
+                return "aptcopilot-property"
+            };
 
             static get properties() {
                 return {
