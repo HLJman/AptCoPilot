@@ -17,16 +17,18 @@
     <template>
         <style>
             iron-pages {
-                height: calc(100% - 61px);
+                display: block;
+                height: 100%;
+                margin-top: 70px;
             }
 
             aptcopilot-header {
                 --aptcopilot-header-height: 60px;
-            }
-
-            iron-pages .content {
-                display: block;
-                height: 100%;
+                position: fixed;
+                z-index: 1000;
+                background: white;
+                top: 0;
+                width: 100%;
             }
         </style>
 
