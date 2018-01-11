@@ -5,6 +5,7 @@
 <link rel="import" href="../bower_components/google-map/google-map.html">
 <link rel="import" href="../bower_components/google-map/google-map-marker.html">
 <link rel="import" href="../bower_components/mp-slider/mp-slider.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 
 <dom-module id="aptcopilot-property">
     <template>
@@ -90,6 +91,8 @@
                 padding: 10px;
             }
         </style>
+
+        <app-route route="{{route}}" pattern="/:id" data="{{routeData}}" active="{{propertyActive}}"></app-route>
 
         <iron-ajax auto url=[[url]] handle-as="json" on-response="handleResponse" last-response="{{property}}" debounce-duration="300"></iron-ajax>
 
@@ -180,15 +183,20 @@
 
             static get properties() {
                 return {
-                    url: {
-                        type: String,
-                        value: config.apibaseurl + "/properties/1"
-                    },
+                    url: String,
                     property: {
                         type: Object,
                         value: {}
+                    },
+                    routeData: {
+                        type: String,
+                        observer: "_routeDataChanged"
                     }
                 }
+            }
+
+            _routeDataChanged(e) {
+                this.url = config.apibaseurl + "/properties/" + e.id
             }
 
 
