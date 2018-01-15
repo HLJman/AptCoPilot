@@ -6,6 +6,7 @@
 <link rel="import" href="../bower_components/google-map/google-map-marker.html">
 <link rel="import" href="../bower_components/mp-slider/mp-slider.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/google-chart/google-chart.html">
 
 <dom-module id="aptcopilot-property">
     <template>
@@ -90,6 +91,11 @@
             .image-carousel {
                 padding: 10px;
             }
+
+            google-chart {
+                height: 300px;
+                width: 100%;
+            }
         </style>
 
         <app-route route="{{route}}" pattern="/:id" data="{{routeData}}" active="{{propertyActive}}"></app-route>
@@ -98,7 +104,7 @@
 
         <h1 id="name" class="property-title">[[property.Name]]</h1>
         <div style="display:flex">
-            <div style="width: 70%">
+            <div style="width: 62%">
                 <div class="property-info">
                     <div class="property-address">[[property.Location.Address]]</div>
                     <div>
@@ -172,6 +178,19 @@
                 </div>
             </template>
         </div>
+
+        <google-chart
+            type='line'
+            options='{"title": "Monthly Rent", "curveType": "function"}'
+            cols='[{"label":"Month", "type":"string"}, {"label":"Days", "type":"number"}]'
+            data='[
+            ["Year", "Rent"],
+            ["2004", 800],
+            ["2005", 900],
+            ["2006", 1100],
+            ["2007", 1200]
+          ]'>
+        </google-chart>
 
     </template>
 

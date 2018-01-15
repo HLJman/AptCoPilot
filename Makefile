@@ -3,7 +3,7 @@ CURRENT=${CURDIR}
 DEST=/go/src/github.com/HLJman/$(NAME)
 INSTANCE=13.57.189.227
 REPO=hljman/aptcopilot
-VERSION=0.0.3
+VERSION=0.0.4
 
 default: fmt vet build
 
@@ -42,5 +42,5 @@ docker_push: assets_build docker_build
 	docker push $(REPO):$(VERSION)
 	docker push $(REPO):latest
 
-publish: 
+publish: docker_push
 	ssh -i ~/.ssh/aws ubuntu@$(INSTANCE) "export DOCKER_HUB_REPO=$(REPO) && export DOCKER_HUB_USERNAME=${DOCKER_HUB_USERNAME} && export DOCKER_HUB_PASSWORD=${DOCKER_HUB_PASSWORD} && ./run"
