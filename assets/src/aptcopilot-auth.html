@@ -1,0 +1,65 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../bower_components/polymeraws/aws-app.html">
+<link rel="import" href="../bower_components/polymeraws/aws-cognito.html">
+
+<dom-module id="aptcopilot-auth">
+  <template>
+    <style>
+      :host {
+        display: block;
+
+        padding: 10px 20px;
+      }
+    </style>
+
+<aws-app region="eu-west-2"></aws-app>
+        
+<!-- identity-pool-id="[[identityPoolId]]" -->
+<aws-cognito id="cognito"
+    region="[[awsRegion]]"
+    user-pool-id="us-west-2_Sxqf852KB"
+    client-id="7i12nnhnirp860t1o0oju4run1"
+  
+    user="{{cognitoUser}}"
+    attributes="{{attributes}}"
+    credentials="{{credentials}}"
+    identity-id="{{identityId}}"
+    logged-in="{{loggedIn}}"
+    session="{{session}}"
+    loading="{{user.loading}}"
+    on-login-success="_handleLoginSuccess"
+    on-confirm-success="_handleLoginSuccess"
+    on-confirm-failure="_handleLoginSuccess"
+    on-logged-in-changed="_handleLoginChange"
+></aws-cognito>
+
+<button on-click="handleClick">Click</button>
+  </template>
+
+  <script>
+    class AptcopilotAuth extends Polymer.Element {
+      static get is() { return 'aptcopilot-auth'; }
+      static get properties() {
+        return {
+        };
+      }
+
+
+
+      handleClick(e) {
+        this.$.cognito.login("josh2", "joshbell2")
+      }
+
+      _handleLoginSuccess(e) {
+        console.log("logged in")
+      }
+
+      _handleLoginChange(e) {
+        this.dispatchEvent(new CustomEvent('logged-in', {detail: {username: e.target.user.username } }))
+      }
+    }
+
+    window.customElements.define(AptcopilotAuth.is, AptcopilotAuth);
+  </script>
+</dom-module>

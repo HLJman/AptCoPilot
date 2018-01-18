@@ -11,6 +11,7 @@
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 
+
 <script src="../scripts/properties.js"></script>
 
 <dom-module id="aptcopilot-app">
@@ -32,16 +33,22 @@
             }
         </style>
 
+   
+
         <app-location route="{{route}}" use-hash-as-path></app-location>
         <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
         <aptcopilot-header properties="[[properties]]"></aptcopilot-header>
 
         <iron-pages selected="[[page]]" attr-for-selected='name' role="main" fallback-selection="view404">
-            <aptcopilot-home class="content" name="home" properties="[[properties]]"></aptcopilot-home>
+            <aptcopilot-home class="content" name="home" properties="[[properties]]">
+            </aptcopilot-home>
             <aptcopilot-properties class="content" name="properties" properties="{{properties}}"></aptcopilot-properties>
             <aptcopilot-contact class="content" name="contact"></aptcopilot-contact>
             <aptcopilot-property class="content" name="property" route="{{subroute}}"></aptcopilot-property>
+            <aptcopilot-auth class="content" name="auth" on-logged-in="_handleLoggedIn">
+                Sign up
+            </aptcopilot-auth>
         </iron-pages>
 
 
@@ -67,6 +74,12 @@
                         type: Array,
                         value: []
                     },
+
+                    // aws
+                    awsRegion: {
+                        type: String,
+                        value: "eu-west-2"
+                    }
                 }
 
             }
@@ -75,6 +88,10 @@
                 return [
                     '_routePageChanged(routeData.page)'
                 ];
+            }
+
+            _handleLoggedIn(e) {
+                this.username = e.detail.username
             }
 
             connectedCallback() {
