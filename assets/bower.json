@@ -25,6 +25,7 @@
     "iron-ajax": "PolymerElements/iron-ajax#^2.0.6",
     "mp-slider": "mpachnis/mp-slider#^2.0.2",
     "google-chart": "GoogleWebComponents/google-chart#^2.0.0",
-    "polymeraws": "PolymerAWS/polymeraws#^3.0.15"
+    "polymeraws": "PolymerAWS/polymeraws#^3.0.15",
+    "app-layout": "PolymerElements/app-layout#^2.0.4"
   }
 }

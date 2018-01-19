@@ -1,15 +1,18 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 
-<link rel="import" href="../src/aptcopilot-header.html">
 <link rel="lazy-import" href="../src/aptcopilot-home.html">
 <link rel="lazy-import" href="../src/aptcopilot-contact.html">
 <link rel="lazy-import" href="../src/aptcopilot-properties.html">
 <link rel="lazy-import" href="../src/aptcopilot-property.html">
-<link rel="import" href="../scripts/config.js">
+<link rel="lazy-import" href="../src/aptcopilot-search.html">
+<script src="../scripts/config.js"></script>
 
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 
 
 <script src="../scripts/properties.js"></script>
@@ -23,13 +26,65 @@
                 margin-top: 70px;
             }
 
-            aptcopilot-header {
-                --aptcopilot-header-height: 60px;
-                position: fixed;
-                z-index: 1000;
+            app-header {
                 background: white;
-                top: 0;
                 width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 1000;
+                border-bottom: 1px solid #ccc;
+            }
+
+            ul {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+            }
+
+            li a {
+                padding: 23px 18px;
+                display: block;
+                color: #3f4448;
+                text-align: center;
+                text-decoration: none;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: .1em;
+            }
+            /* Change the link color on hover */
+
+            li a:hover {
+                background-color: #018ED0;
+                color: white;
+                cursor: pointer;
+            }
+
+            img.small-logo {
+                padding: 0px 20px;
+                height: 100%;
+                cursor: pointer;
+            }
+
+            aptcopilot-search {
+                --aptcopilot-search-width: 400px;
+                --aptcopilot-search-margin-right: 20px;
+                --aptcopilot-search-font-size: .7em;
+            }
+
+            app-toolbar {
+                padding: 0;
+                height: 60px;
+            }
+
+            hidden {
+                display: none;
             }
         </style>
 
@@ -38,7 +93,22 @@
         <app-location route="{{route}}" use-hash-as-path></app-location>
         <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
-        <aptcopilot-header properties="[[properties]]"></aptcopilot-header>
+        <app-header fixed>
+            <app-toolbar>
+                <img src="../images/Horizontal-Logo---Website.png" on-click="_home" href="/" class="small-logo">
+                <ul>
+                    <li>
+                        <a href="/#/properties">Properties</a>
+                    </li>
+                    <li>
+                        <a href="/#/contact">Contact</a>
+                    </li>
+                </ul>
+                
+                <aptcopilot-search id="search" properties="{{properties}}" hidden$="[[hide]]" class="hidden"></aptcopilot-search>
+
+            </app-toolbar>
+        </app-header>
 
         <iron-pages selected="[[page]]" attr-for-selected='name' role="main" fallback-selection="view404">
             <aptcopilot-home class="content" name="home" properties="[[properties]]">
@@ -56,7 +126,9 @@
 
     <script>
         class AptcopilotApp extends Polymer.Element {
-            static get is() { return "aptcopilot-app"; }
+            static get is() {
+                return "aptcopilot-app";
+            }
 
             static get properties() {
                 return {
@@ -79,6 +151,18 @@
                     awsRegion: {
                         type: String,
                         value: "eu-west-2"
+                    },
+                    search: {
+                        type: Boolean,
+                        observer: "_searchChanged"
+                    },
+                    tab: {
+                        type: String,
+                        value: "home"
+                    },
+                    hide: {
+                        type: Boolean,
+                        value: true
                     }
                 }
 
@@ -106,16 +190,14 @@
             }
 
             _routePageChanged(page) {
-                // If no page was found in the route data, page will be an empty string.
-                // Default to 'view1' in that case.
                 this.page = page || 'home';
             }
 
             _pageChanged(page) {
                 if (this.page != "home") {
-                    this.shadowRoot.querySelector("aptcopilot-header").search = true;
+                    this.hide = false;
                 } else {
-                    this.shadowRoot.querySelector("aptcopilot-header").search = false;
+                    this.hide = true;
                 }
 
                 // Load page import on demand. Show 404 page if fails
@@ -130,6 +212,17 @@
             _showPage404() {
                 this.page = 'view404';
             }
+
+            _searchChanged(newValue, oldValue) {
+                if (newValue) {
+                    this.shadowRoot.querySelector('aptcopilot-search').classList.remove('hidden');
+                }
+            }
+
+            _home(e) {
+                window.location.href = e.target.getAttribute('href');
+            }
+
         }
         window.customElements.define(AptcopilotApp.is, AptcopilotApp);
     </script>
