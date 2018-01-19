@@ -10,7 +10,7 @@
     <template>
         <style>
             :host {
-                display: block;
+                /* display: block; */
                 margin-right: var(--aptcopilot-search-margin-right);
             }
 
@@ -30,7 +30,7 @@
                 -webkit-appearance: none;
                 border: 1px solid #3f4448;
                 padding: 13px;
-                font-size: .9em;
+                font-size: var(--aptcopilot-search-font-size);
                 width: var(--aptcopilot-search-width);
                 outline: none;
             }
@@ -58,6 +58,7 @@
                 display: flex;
                 align-items: center;
             }
+
         </style>
 
         <div class="search-box">
