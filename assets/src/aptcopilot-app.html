@@ -35,7 +35,7 @@
                 border-bottom: 1px solid #ccc;
             }
 
-            iron-selector {
+            ul {
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
@@ -47,7 +47,7 @@
                 height: 100%;
             }
 
-            iron-selector div {
+            li a {
                 padding: 23px 18px;
                 display: block;
                 color: #3f4448;
@@ -59,7 +59,7 @@
             }
             /* Change the link color on hover */
 
-            iron-selector div:hover {
+            li a:hover {
                 background-color: #018ED0;
                 color: white;
                 cursor: pointer;
@@ -87,18 +87,23 @@
             }
         </style>
 
-        <app-location route="{{route}}" path="/{{page}}" use-hash-as-path></app-location>
+        <app-location route="{{route}}" use-hash-as-path></app-location>
         <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
         <app-header fixed>
             <app-toolbar>
-                <iron-selector attr-for-selected="name" selected={{page}}>
-                    <img src="../images/Horizontal-Logo---Website.png" name="home" class="small-logo">
-                    <div name="properties">Properties</div>
-                    <div name="contact">Contact</div>
-                </iron-selector>
-
+                <img src="../images/Horizontal-Logo---Website.png" on-click="_home" href="/" class="small-logo">
+                <ul>
+                    <li>
+                        <a href="/#/properties">Properties</a>
+                    </li>
+                    <li>
+                        <a href="/#/contact">Contact</a>
+                    </li>
+                </ul>
+                
                 <aptcopilot-search id="search" properties="{{properties}}" hidden$="[[hide]]" class="hidden"></aptcopilot-search>
+
             </app-toolbar>
         </app-header>
 
@@ -197,6 +202,9 @@
                 }
             }
 
+            _home(e) {
+                window.location.href = e.target.getAttribute('href');
+            }
 
         }
         window.customElements.define(AptcopilotApp.is, AptcopilotApp);
