@@ -1,0 +1,45 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../src/aptcopilot-auth.html">
+
+<dom-module id="aptcopilot-login">
+  <template>
+    <style>
+      :host {
+        display: block;
+
+        padding: 10px 20px;
+      }
+    </style>
+
+<aptcopilot-auth id="auth"></aptcopilot-auth>
+
+<input type="text" value="{{username}}">
+<input type="password" value="{{password}}">
+<button on-click="handleClick">Click</button>
+  </template>
+
+  <script>
+    class AptcopilotLogin extends Polymer.Element {
+      static get is() { return 'aptcopilot-login'; }
+      static get properties() {
+        return {
+          username: {
+            type: String,
+            value: "josh2"
+          },
+          password: {
+            type: String,
+            value: "joshbell2"
+          }
+        };
+      }
+    
+      handleClick(e) {
+                this.$.auth.login(this.username, this.password)
+            }
+    
+    }
+
+    window.customElements.define(AptcopilotLogin.is, AptcopilotLogin);
+  </script>
+</dom-module>

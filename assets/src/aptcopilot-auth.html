@@ -1,62 +1,113 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 
-<link rel="import" href="../bower_components/polymeraws/aws-app.html">
-<link rel="import" href="../bower_components/polymeraws/aws-cognito.html">
+<script src="../bower_components/amazon-cognito-identity-js/dist/aws-cognito-sdk.min.js"></script>
+<script src="../bower_components/amazon-cognito-identity-js/dist/amazon-cognito-identity.min.js"></script>
+<!-- optional: only if you use other AWS services -->
+<script src="../bower_components/aws-sdk/dist/aws-sdk.js"></script>
 
 <dom-module id="aptcopilot-auth">
-  <template>
-    <style>
-      :host {
-        display: block;
-
-        padding: 10px 20px;
-      }
-    </style>
-
-<aws-app region="eu-west-2"></aws-app>
-        
-<!-- identity-pool-id="[[identityPoolId]]" -->
-<aws-cognito id="cognito"
-    region="[[awsRegion]]"
-    user-pool-id="us-west-2_Sxqf852KB"
-    client-id="7i12nnhnirp860t1o0oju4run1"
-  
-    user="{{cognitoUser}}"
-    attributes="{{attributes}}"
-    credentials="{{credentials}}"
-    identity-id="{{identityId}}"
-    logged-in="{{loggedIn}}"
-    session="{{session}}"
-    loading="{{user.loading}}"
-    on-login-success="_handleLoginSuccess"
-    on-confirm-success="_handleLoginSuccess"
-    on-confirm-failure="_handleLoginSuccess"
-    on-logged-in-changed="_handleLoginChange"
-></aws-cognito>
-
-<button on-click="handleClick">Click</button>
-  </template>
 
   <script>
     class AptcopilotAuth extends Polymer.Element {
-      static get is() { return 'aptcopilot-auth'; }
+      static get is() {
+        return 'aptcopilot-auth';
+      }
       static get properties() {
         return {
+          awsRegion: {
+            type: String,
+            value: "us-west-2"
+          },
+          userPoolID: {
+            type: String,
+            value: "us-west-2_Sxqf852KB"
+          },
+          clientID: {
+            type: String,
+            value: "7i12nnhnirp860t1o0oju4run1"
+          },
+          identityPoolId: {
+            type: String,
+            value: "us-west-2:7abf4ed1-c05b-4661-b56d-b831ea4500a9"
+          },
+          user: Object
         };
       }
 
+      ready() {
+        this._loginCheck();
+      }
 
+      _loginCheck() {
+        AWSCognito.config.region = this.awsRegion;
 
-      handleClick(e) {
-        this.$.cognito.login("josh2", "joshbell2")
+        var session = null;
+
+        var data = {
+          UserPoolId: this.userPoolID,
+          ClientId: this.clientID
+        };
+        var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(data);
+        var cognitoUser = userPool.getCurrentUser();
+
+        if (cognitoUser != null) {
+          this.user = cognitoUser;
+          var that = this;
+          cognitoUser.getSession(function (err, lsession) {
+            if (err) {
+              alert(err);
+              return;
+            }
+            session = lsession;
+            console.log('session validity: ' + lsession.isValid());
+
+            that.dispatchEvent(new CustomEvent('logged-in', {
+              detail: {
+                value: true,
+                user: that.user
+              }
+            }));
+          });
+        } else {
+          this.dispatchEvent(new CustomEvent('logged-in', {
+            detail: {
+              value: false,
+              user: this.cognitoUser
+            }
+          }));
+        }
+      }
+
+      login(username, password) {
+        let p = this.$.cognito.login(username, password)
+        p.then(this._handleLoginSuccess.bind(this), this._handleLoginFailure)
       }
 
       _handleLoginSuccess(e) {
         console.log("logged in")
+        console.log(this.session)
+        this.dispatchEvent(new CustomEvent('logged-in', {
+          detail: {
+            user: this.cognitoUser
+          }
+        }));
+      }
+
+      _handleLoginFailure(e) {
+        // show error
+        console.log("log in failed")
       }
 
       _handleLoginChange(e) {
-        this.dispatchEvent(new CustomEvent('logged-in', {detail: {username: e.target.user.username } }))
+        console.log(e.detail.value)
+
+        if (e.detail.value) {
+          this.dispatchEvent(new CustomEvent('logged-in', {
+            detail: {
+              user: this.cognitoUser
+            }
+          }))
+        }
       }
     }
 

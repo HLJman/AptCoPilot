@@ -1,10 +1,14 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 
-<link rel="lazy-import" href="../src/aptcopilot-home.html">
-<link rel="lazy-import" href="../src/aptcopilot-contact.html">
-<link rel="lazy-import" href="../src/aptcopilot-properties.html">
-<link rel="lazy-import" href="../src/aptcopilot-property.html">
-<link rel="lazy-import" href="../src/aptcopilot-search.html">
+<!-- <script src="../scripts/auth.js"></script> -->
+
+<link rel="lazy-import" href="aptcopilot-home.html">
+<link rel="lazy-import" href="aptcopilot-contact.html">
+<link rel="lazy-import" href="aptcopilot-properties.html">
+<link rel="lazy-import" href="aptcopilot-property.html">
+<link rel="lazy-import" href="aptcopilot-search.html">
+<link rel="lazy-import" href="aptcopilot-login.html">
+<link rel="import" href="aptcopilot-auth.html">
 <script src="../scripts/config.js"></script>
 
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
@@ -88,7 +92,7 @@
             }
         </style>
 
-   
+        <aptcopilot-auth on-logged-in="_handleLoggedIn"></aptcopilot-auth>
 
         <app-location route="{{route}}" use-hash-as-path></app-location>
         <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
@@ -107,18 +111,23 @@
                 
                 <aptcopilot-search id="search" properties="{{properties}}" hidden$="[[hide]]" class="hidden"></aptcopilot-search>
 
+                <template is="dom-if" if="{{!loggedIn}}">
+                    <ul>
+                        <li>
+                            <a href="/#/login">Login</a>
+                        </li>
+                    </ul>
+                </template> 
+                {{username}}
             </app-toolbar>
         </app-header>
 
         <iron-pages selected="[[page]]" attr-for-selected='name' role="main" fallback-selection="view404">
-            <aptcopilot-home class="content" name="home" properties="[[properties]]">
-            </aptcopilot-home>
+            <aptcopilot-home class="content" name="home" properties="[[properties]]"></aptcopilot-home>
             <aptcopilot-properties class="content" name="properties" properties="{{properties}}"></aptcopilot-properties>
             <aptcopilot-contact class="content" name="contact"></aptcopilot-contact>
             <aptcopilot-property class="content" name="property" route="{{subroute}}"></aptcopilot-property>
-            <aptcopilot-auth class="content" name="auth" on-logged-in="_handleLoggedIn">
-                Sign up
-            </aptcopilot-auth>
+            <aptcopilot-login class="content" name="login" on-logged-in="_handleLoggedIn"></aptcopilot-login>
         </iron-pages>
 
 
@@ -163,6 +172,10 @@
                     hide: {
                         type: Boolean,
                         value: true
+                    },
+                    loggedIn: {
+                        type: Boolean,
+                        value: false
                     }
                 }
 
@@ -175,7 +188,11 @@
             }
 
             _handleLoggedIn(e) {
-                this.username = e.detail.username
+                if (e.detail.value) {
+                    this.username = e.detail.user.username;
+                    this.user = e.detail.user;
+                    this.loggedIn = true;
+                }
             }
 
             connectedCallback() {
